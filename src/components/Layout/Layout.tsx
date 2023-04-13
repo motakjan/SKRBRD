@@ -13,7 +13,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           padding: '2rem',
           backgroundColor:
             theme.colorScheme === 'dark'
-              ? theme.colors.dark[8]
+              ? theme.colors.dark[9]
               : theme.colors.white,
         })}
       >
