@@ -4,11 +4,13 @@ import { IconPencil, IconTrash } from '@tabler/icons-react';
 type PlayerCardProps = {
   firstName: string;
   lastName: string;
+  onDeleteClick: (name: string) => void;
 };
 
 export const PlayerCard: React.FC<PlayerCardProps> = ({
   firstName,
   lastName,
+  onDeleteClick,
 }) => {
   return (
     <Card
@@ -33,7 +35,11 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
           <ActionIcon variant="subtle">
             <IconPencil size="1rem" />
           </ActionIcon>
-          <ActionIcon variant="subtle" color="red.8">
+          <ActionIcon
+            variant="subtle"
+            color="red.8"
+            onClick={() => onDeleteClick(`${firstName} ${lastName}`)}
+          >
             <IconTrash size="1rem" />
           </ActionIcon>
         </Flex>

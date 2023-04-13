@@ -1,4 +1,5 @@
 import { ActionIcon, Flex, Grid, Text, Title } from '@mantine/core';
+import { modals } from '@mantine/modals';
 import { IconPlus } from '@tabler/icons-react';
 
 import type { NextPage } from 'next';
@@ -24,6 +25,18 @@ const players = [
 ];
 
 const League: NextPage = () => {
+  const openConfirmModal = (name: string) =>
+    modals.openConfirmModal({
+      title: 'Please confirm your action',
+      children: (
+        <Text size="sm">Are you sure you want to delete player {name}</Text>
+      ),
+      labels: { confirm: 'Confirm', cancel: 'Cancel' },
+      confirmProps: { color: 'red' },
+      onCancel: () => console.log('Cancel'),
+      onConfirm: () => console.log('Confirmed'),
+    });
+
   return (
     <>
       <Head>
@@ -33,7 +46,7 @@ const League: NextPage = () => {
       </Head>
       <main>
         <Flex gap={10} align="center">
-          <Title order={1} c="white" mb={2}>
+          <Title order={1} c="white">
             Players
           </Title>
           <ActionIcon variant="light" color="gray.1" radius="md">
@@ -45,7 +58,11 @@ const League: NextPage = () => {
         <Grid sx={{ paddingTop: '2rem' }}>
           {players.map(player => (
             <Grid.Col md={6} lg={3} key={`card-${player.lname}`}>
-              <PlayerCard firstName={player.fname} lastName={player.lname} />
+              <PlayerCard
+                firstName={player.fname}
+                lastName={player.lname}
+                onDeleteClick={openConfirmModal}
+              />
             </Grid.Col>
           ))}
         </Grid>

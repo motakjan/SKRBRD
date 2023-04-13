@@ -5,6 +5,7 @@ import { api } from '~/utils/api';
 import { ClerkProvider } from '@clerk/nextjs';
 import { dark } from '@clerk/themes';
 import { MantineProvider } from '@mantine/core';
+import { ModalsProvider } from '@mantine/modals';
 import '~/styles/globals.css';
 import { Layout } from '../components/Layout/Layout';
 
@@ -24,9 +25,11 @@ const MyApp: AppType = ({ Component, pageProps }) => {
           baseTheme: dark,
         }}
       >
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <ModalsProvider>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </ModalsProvider>
       </ClerkProvider>
     </MantineProvider>
   );
