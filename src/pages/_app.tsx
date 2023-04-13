@@ -3,8 +3,10 @@ import { type AppType } from 'next/app';
 import { api } from '~/utils/api';
 
 import { ClerkProvider } from '@clerk/nextjs';
+import { dark } from '@clerk/themes';
 import { MantineProvider } from '@mantine/core';
 import '~/styles/globals.css';
+import { Layout } from '../components/Layout/Layout';
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
@@ -15,8 +17,15 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       withGlobalStyles
       withNormalizeCSS
     >
-      <ClerkProvider {...pageProps}>
-        <Component {...pageProps} />
+      <ClerkProvider
+        {...pageProps}
+        appearance={{
+          baseTheme: dark,
+        }}
+      >
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
       </ClerkProvider>
     </MantineProvider>
   );
