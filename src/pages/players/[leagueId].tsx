@@ -1,8 +1,9 @@
-import { ActionIcon, Card, Flex, Grid, Text, Title } from '@mantine/core';
-import { IconPencil, IconPlus, IconTrash } from '@tabler/icons-react';
+import { ActionIcon, Flex, Grid, Text, Title } from '@mantine/core';
+import { IconPlus } from '@tabler/icons-react';
 
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import { PlayerCard } from '~/components/PlayersPage/PlayerCard';
 
 const players = [
   { fname: 'Jan', lname: 'Motak' },
@@ -33,9 +34,9 @@ const League: NextPage = () => {
       <main>
         <Flex gap={10} align="center">
           <Title order={1} c="white" mb={2}>
-            League players
+            Players
           </Title>
-          <ActionIcon variant="light">
+          <ActionIcon variant="light" color="gray.1" radius="md">
             <IconPlus size="1rem" />
           </ActionIcon>
         </Flex>
@@ -44,34 +45,7 @@ const League: NextPage = () => {
         <Grid sx={{ paddingTop: '2rem' }}>
           {players.map(player => (
             <Grid.Col md={6} lg={3} key={`card-${player.lname}`}>
-              <Card
-                radius="md"
-                padding="sm"
-                sx={theme => ({
-                  width: '100%',
-                  backgroundColor:
-                    theme.colorScheme === 'dark'
-                      ? theme.colors.dark[9]
-                      : theme.colors.gray[1],
-                })}
-              >
-                <Flex justify="space-between" align="center">
-                  <Flex direction="column">
-                    <Text fz="sm">{player.fname}</Text>
-                    <Text fz="md" fw={700} tt="uppercase">
-                      {player.lname}
-                    </Text>
-                  </Flex>
-                  <Flex>
-                    <ActionIcon variant="subtle">
-                      <IconPencil size="1rem" />
-                    </ActionIcon>
-                    <ActionIcon variant="subtle" color="red.8">
-                      <IconTrash size="1rem" />
-                    </ActionIcon>
-                  </Flex>
-                </Flex>
-              </Card>
+              <PlayerCard firstName={player.fname} lastName={player.lname} />
             </Grid.Col>
           ))}
         </Grid>
