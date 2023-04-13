@@ -13,6 +13,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
     <MantineProvider
       theme={{
         colorScheme: 'dark',
+        fontFamily: 'Mulish, sans-serif',
       }}
       withGlobalStyles
       withNormalizeCSS
