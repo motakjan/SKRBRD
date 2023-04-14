@@ -10,10 +10,10 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       <Box
         sx={theme => ({
           width: '100%',
-          padding: '1rem',
+          padding: '2rem',
           backgroundColor:
             theme.colorScheme === 'dark'
-              ? theme.colors.dark[8]
+              ? theme.colors.dark[9]
               : theme.colors.white,
         })}
       >

@@ -35,16 +35,25 @@ export function NavbarMinimal() {
   return (
     <Navbar
       width={{ base: 60 }}
-      p="md"
+      p="sm"
       sx={theme => ({
+        minHeight: '100vh',
         backgroundColor:
           theme.colorScheme === 'dark'
             ? theme.colors.dark[9]
             : theme.colors.white,
       })}
+      zIndex={133}
+      height="initial"
     >
-      <Center>
-        <Image src="./images/logo.svg" width={36} height={36} alt="site-logo" />
+      <Center mt={24}>
+        <Image
+          src="/images/logo.svg"
+          width={36}
+          height={36}
+          alt="site-logo"
+          loading="eager"
+        />
       </Center>
 
       <Navbar.Section grow mt={50}>

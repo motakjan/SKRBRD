@@ -24,8 +24,8 @@ export const useStyles = createStyles(theme => ({
 
   active: {
     '&, &:hover': {
-      backgroundColor: theme.fn.rgba(theme.colors.orange[3], 0.2),
-      color: theme.colors.orange[3],
+      backgroundColor: theme.fn.rgba(theme.colors.indigo[5], 0.2),
+      color: theme.colors.indigo[5],
     },
   },
 }));
