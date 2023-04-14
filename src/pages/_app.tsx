@@ -6,6 +6,7 @@ import { ClerkProvider } from '@clerk/nextjs';
 import { dark } from '@clerk/themes';
 import { MantineProvider } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
+import { Notifications } from '@mantine/notifications';
 import '~/styles/globals.css';
 import { Layout } from '../components/Layout/Layout';
 
@@ -27,7 +28,10 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       >
         <ModalsProvider>
           <Layout>
-            <Component {...pageProps} />
+            <>
+              <Notifications />
+              <Component {...pageProps} />
+            </>
           </Layout>
         </ModalsProvider>
       </ClerkProvider>

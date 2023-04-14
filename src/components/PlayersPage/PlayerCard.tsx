@@ -5,12 +5,16 @@ type PlayerCardProps = {
   firstName: string;
   lastName: string;
   onDeleteClick: (name: string) => void;
+  onEditClick: (id: string) => void;
+  id: string;
 };
 
 export const PlayerCard: React.FC<PlayerCardProps> = ({
   firstName,
   lastName,
   onDeleteClick,
+  onEditClick,
+  id,
 }) => {
   return (
     <Card
@@ -31,8 +35,8 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
             {lastName}
           </Text>
         </Flex>
-        <Flex>
-          <ActionIcon variant="subtle">
+        <Flex direction="column">
+          <ActionIcon variant="subtle" onClick={() => onEditClick(id)}>
             <IconPencil size="1rem" />
           </ActionIcon>
           <ActionIcon

@@ -1,45 +1,136 @@
-import { ActionIcon, Flex, Grid, Text, Title } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import { modals } from "@mantine/modals";
-import { IconPlus } from "@tabler/icons-react";
+import { ActionIcon, Flex, Grid, Text, Title } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import { modals } from '@mantine/modals';
+import { IconPlus } from '@tabler/icons-react';
 
-import type { NextPage } from "next";
-import Head from "next/head";
-import { PlayerCard } from "~/components/PlayersPage/PlayerCard";
-import { PlayerModal } from "~/components/PlayersPage/PlayerModal";
+import type { NextPage } from 'next';
+import Head from 'next/head';
+import { useState } from 'react';
+import { PlayerCard } from '~/components/PlayersPage/PlayerCard';
+import { PlayerModal } from '~/components/PlayersPage/PlayerModal';
+import type { PlayerFormValues } from '~/components/PlayersPage/PlayerModal.types';
 
 const players = [
-  { fname: "Jan", lname: "Motak" },
-  { fname: "Anna", lname: "Kowalski" },
-  { fname: "Emma", lname: "Lee" },
-  { fname: "David", lname: "Johnson" },
-  { fname: "Sara", lname: "Gonzalez" },
-  { fname: "Max", lname: "Smith" },
-  { fname: "Maria", lname: "Garcia" },
-  { fname: "Jack", lname: "Brown" },
-  { fname: "Olivia", lname: "Davis" },
-  { fname: "Alex", lname: "Martinez" },
-  { fname: "Sophia", lname: "Wilson" },
-  { fname: "Luke", lname: "Taylor" },
-  { fname: "Isabella", lname: "Hernandez" },
-  { fname: "Noah", lname: "Thomas" },
-  { fname: "Emily", lname: "Moore" },
+  {
+    firstName: 'Jan',
+    lastName: 'Motak',
+    id: 'JM345',
+    mmr: Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000,
+  },
+  {
+    firstName: 'Anna',
+    lastName: 'Kowalski',
+    id: 'AK675',
+    mmr: Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000,
+  },
+  {
+    firstName: 'Emma',
+    lastName: 'Lee',
+    id: 'EL923',
+    mmr: Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000,
+  },
+  {
+    firstName: 'David',
+    lastName: 'Johnson',
+    id: 'DJ156',
+    mmr: Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000,
+  },
+  {
+    firstName: 'Sara',
+    lastName: 'Gonzalez',
+    id: 'SG821',
+    mmr: Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000,
+  },
+  {
+    firstName: 'Max',
+    lastName: 'Smith',
+    id: 'MS428',
+    mmr: Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000,
+  },
+  {
+    firstName: 'Maria',
+    lastName: 'Garcia',
+    id: 'MG764',
+    mmr: Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000,
+  },
+  {
+    firstName: 'Jack',
+    lastName: 'Brown',
+    id: 'JB267',
+    mmr: Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000,
+  },
+  {
+    firstName: 'Olivia',
+    lastName: 'Davis',
+    id: 'OD593',
+    mmr: Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000,
+  },
+  {
+    firstName: 'Alex',
+    lastName: 'Martinez',
+    id: 'AM194',
+    mmr: Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000,
+  },
+  {
+    firstName: 'Sophia',
+    lastName: 'Wilson',
+    id: 'SW753',
+    mmr: Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000,
+  },
+  {
+    firstName: 'Luke',
+    lastName: 'Taylor',
+    id: 'LT287',
+    mmr: Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000,
+  },
+  {
+    firstName: 'Isabella',
+    lastName: 'Hernandez',
+    id: 'IH865',
+    mmr: Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000,
+  },
+  {
+    firstName: 'Noah',
+    lastName: 'Thomas',
+    id: 'NT412',
+    mmr: Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000,
+  },
+  {
+    firstName: 'Emily',
+    lastName: 'Moore',
+    id: 'EM639',
+    mmr: Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000,
+  },
 ];
 
 const League: NextPage = () => {
+  const [editedPlayerId, setEditedPlayerId] = useState<string>('');
   const [opened, { open, close }] = useDisclosure(false);
 
-  const openConfirmModal = (name: string) =>
-    modals.openConfirmModal({
-      title: "Please confirm your action",
-      children: (
-        <Text size="sm">Are you sure you want to delete player {name}</Text>
-      ),
-      labels: { confirm: "Confirm", cancel: "Cancel" },
-      confirmProps: { color: "red" },
-      onCancel: () => console.log("Cancel"),
-      onConfirm: () => console.log("Confirmed"),
-    });
+  const modalClose = () => {
+    close();
+    setEditedPlayerId('');
+  };
+
+  const handleCreateSubmit = (playerValues: PlayerFormValues) => {
+    console.log(playerValues);
+    close();
+  };
+
+  const handleEditSubmit = (playerValues: PlayerFormValues) => {
+    console.log(playerValues);
+    close();
+  };
+
+  const handlePlayerEditClick = (playerId: string) => {
+    const player = players.find(p => p.id === playerId);
+    if (!player) return;
+
+    setEditedPlayerId(player.id);
+    open();
+  };
+
+  const editedPlayer = players.find(p => p.id === editedPlayerId);
 
   return (
     <>
@@ -59,22 +150,41 @@ const League: NextPage = () => {
         </Flex>
 
         <Text fz="sm">List of players in league and their administration</Text>
-        <Grid sx={{ paddingTop: "2rem" }}>
-          {players.map((player) => (
-            <Grid.Col md={6} lg={3} key={`card-${player.lname}`}>
+        <Grid sx={{ paddingTop: '2rem' }}>
+          {players.map(player => (
+            <Grid.Col md={6} lg={3} key={`card-${player.id}`}>
               <PlayerCard
-                firstName={player.fname}
-                lastName={player.lname}
+                firstName={player.firstName}
+                lastName={player.lastName}
+                id={player.id}
+                onEditClick={handlePlayerEditClick}
                 onDeleteClick={openConfirmModal}
               />
             </Grid.Col>
           ))}
         </Grid>
 
-        <PlayerModal opened={opened} close={close} title="Add user" />
+        <PlayerModal
+          opened={opened}
+          editedPlayer={editedPlayer}
+          close={modalClose}
+          handleSubmit={editedPlayer ? handleCreateSubmit : handleEditSubmit}
+          title={editedPlayer ? 'Edit Player' : 'Add Player'}
+        />
       </main>
     </>
   );
 };
+
+const openConfirmModal = (name: string) =>
+  modals.openConfirmModal({
+    title: 'Please confirm your action',
+    children: (
+      <Text size="sm">Are you sure you want to delete player {name}</Text>
+    ),
+    labels: { confirm: 'Confirm', cancel: 'Cancel' },
+    confirmProps: { color: 'red' },
+    onConfirm: () => console.log('Confirmed'),
+  });
 
 export default League;
