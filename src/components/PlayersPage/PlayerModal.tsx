@@ -27,11 +27,10 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
     },
 
     validate: {
-      firstName: (value) =>
-        value.length > 1 ? null : "First name is required",
-      lastName: (value) => (value.length > 1 ? null : "Last name is required"),
+      firstName: (value) => value.length < 1 && "First name is required",
+      lastName: (value) => value.length < 1 && "Last name is required",
       mmr: (value) =>
-        value > 0 && value < 8000 ? null : "MMR needs to be between 0 and 8000",
+        value < 0 || (value > 8000 && "MMR needs to be between 0 and 8000"),
     },
   });
 
