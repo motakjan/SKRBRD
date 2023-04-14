@@ -1,40 +1,44 @@
-import { ActionIcon, Flex, Grid, Text, Title } from '@mantine/core';
-import { modals } from '@mantine/modals';
-import { IconPlus } from '@tabler/icons-react';
+import { ActionIcon, Flex, Grid, Text, Title } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import { modals } from "@mantine/modals";
+import { IconPlus } from "@tabler/icons-react";
 
-import type { NextPage } from 'next';
-import Head from 'next/head';
-import { PlayerCard } from '~/components/PlayersPage/PlayerCard';
+import type { NextPage } from "next";
+import Head from "next/head";
+import { PlayerCard } from "~/components/PlayersPage/PlayerCard";
+import { PlayerModal } from "~/components/PlayersPage/PlayerModal";
 
 const players = [
-  { fname: 'Jan', lname: 'Motak' },
-  { fname: 'Anna', lname: 'Kowalski' },
-  { fname: 'Emma', lname: 'Lee' },
-  { fname: 'David', lname: 'Johnson' },
-  { fname: 'Sara', lname: 'Gonzalez' },
-  { fname: 'Max', lname: 'Smith' },
-  { fname: 'Maria', lname: 'Garcia' },
-  { fname: 'Jack', lname: 'Brown' },
-  { fname: 'Olivia', lname: 'Davis' },
-  { fname: 'Alex', lname: 'Martinez' },
-  { fname: 'Sophia', lname: 'Wilson' },
-  { fname: 'Luke', lname: 'Taylor' },
-  { fname: 'Isabella', lname: 'Hernandez' },
-  { fname: 'Noah', lname: 'Thomas' },
-  { fname: 'Emily', lname: 'Moore' },
+  { fname: "Jan", lname: "Motak" },
+  { fname: "Anna", lname: "Kowalski" },
+  { fname: "Emma", lname: "Lee" },
+  { fname: "David", lname: "Johnson" },
+  { fname: "Sara", lname: "Gonzalez" },
+  { fname: "Max", lname: "Smith" },
+  { fname: "Maria", lname: "Garcia" },
+  { fname: "Jack", lname: "Brown" },
+  { fname: "Olivia", lname: "Davis" },
+  { fname: "Alex", lname: "Martinez" },
+  { fname: "Sophia", lname: "Wilson" },
+  { fname: "Luke", lname: "Taylor" },
+  { fname: "Isabella", lname: "Hernandez" },
+  { fname: "Noah", lname: "Thomas" },
+  { fname: "Emily", lname: "Moore" },
 ];
 
 const League: NextPage = () => {
+  const [opened, { open, close }] = useDisclosure(false);
+
   const openConfirmModal = (name: string) =>
     modals.openConfirmModal({
-      title: 'Please confirm your action',
+      title: "Please confirm your action",
       children: (
         <Text size="sm">Are you sure you want to delete player {name}</Text>
       ),
-      labels: { confirm: 'Confirm', cancel: 'Cancel' },
-      confirmProps: { color: 'red' },
-      onCancel: () => console.log('Cancel'),
-      onConfirm: () => console.log('Confirmed'),
+      labels: { confirm: "Confirm", cancel: "Cancel" },
+      confirmProps: { color: "red" },
+      onCancel: () => console.log("Cancel"),
+      onConfirm: () => console.log("Confirmed"),
     });
 
   return (
@@ -49,14 +53,14 @@ const League: NextPage = () => {
           <Title order={1} c="white">
             Players
           </Title>
-          <ActionIcon variant="light" color="gray.1" radius="md">
+          <ActionIcon variant="light" color="gray.1" radius="md" onClick={open}>
             <IconPlus size="1rem" />
           </ActionIcon>
         </Flex>
 
         <Text fz="sm">List of players in league and their administration</Text>
-        <Grid sx={{ paddingTop: '2rem' }}>
-          {players.map(player => (
+        <Grid sx={{ paddingTop: "2rem" }}>
+          {players.map((player) => (
             <Grid.Col md={6} lg={3} key={`card-${player.lname}`}>
               <PlayerCard
                 firstName={player.fname}
@@ -66,6 +70,8 @@ const League: NextPage = () => {
             </Grid.Col>
           ))}
         </Grid>
+
+        <PlayerModal opened={opened} close={close} title="Add user" />
       </main>
     </>
   );

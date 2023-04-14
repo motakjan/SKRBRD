@@ -1,6 +1,6 @@
-import { Center, Navbar, Stack } from '@mantine/core';
+import { Center, Navbar, Stack } from "@mantine/core";
 
-import { UserButton, useClerk, useUser } from '@clerk/nextjs';
+import { UserButton, useClerk, useUser } from "@clerk/nextjs";
 import {
   IconCalendarDue,
   IconHome2,
@@ -9,19 +9,19 @@ import {
   IconTimeline,
   IconTrophy,
   IconUsers,
-} from '@tabler/icons-react';
-import Image from 'next/image';
-import type { NavLinkType } from '../Layout.types';
-import { NavbarLink } from './NavbarLink';
+} from "@tabler/icons-react";
+import Image from "next/image";
+import type { NavLinkType } from "../Layout.types";
+import { NavbarLink } from "./NavbarLink";
 
-const slug = 'asdhuasdasd4as5d45as4d5as4d5a';
+const slug = "asdhuasdasd4as5d45as4d5as4d5a";
 
 const navLinks: NavLinkType[] = [
-  { icon: IconHome2, label: 'Home', href: `/` },
-  { icon: IconTimeline, label: 'League', href: `/league/${slug}` },
-  { icon: IconUsers, label: 'Players', href: `/players/${slug}` },
-  { icon: IconCalendarDue, label: 'Match history', href: `/history/${slug}` },
-  { icon: IconTrophy, label: 'Tournaments', href: `/tournaments/${slug}` },
+  { icon: IconHome2, label: "Home", href: `/` },
+  { icon: IconTimeline, label: "League", href: `/league/${slug}` },
+  { icon: IconUsers, label: "Players", href: `/players/${slug}` },
+  { icon: IconCalendarDue, label: "Match history", href: `/history/${slug}` },
+  { icon: IconTrophy, label: "Tournaments", href: `/tournaments/${slug}` },
 ];
 
 export function NavbarMinimal() {
@@ -36,12 +36,13 @@ export function NavbarMinimal() {
     <Navbar
       width={{ base: 60 }}
       p="sm"
-      sx={theme => ({
+      sx={(theme) => ({
         backgroundColor:
-          theme.colorScheme === 'dark'
+          theme.colorScheme === "dark"
             ? theme.colors.dark[9]
             : theme.colors.white,
       })}
+      zIndex={133}
     >
       <Center mt={24}>
         <Image
