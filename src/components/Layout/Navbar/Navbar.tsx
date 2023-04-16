@@ -14,6 +14,7 @@ import {
 } from '@tabler/icons-react';
 import Image from 'next/image';
 import { IconButton } from '~/components/UI/IconButton';
+import { useLeagueMutations } from '~/hooks/mutations/useLeagueMutations';
 import type { NavLinkType } from '../Layout.types';
 import { LeagueModal } from '../LeagueModal/LeagueModal';
 import { type LeagueFormValues } from '../LeagueModal/LeagueModal.types';
@@ -37,6 +38,7 @@ export function NavbarMinimal() {
   const { openSignIn } = useClerk();
   const { isSignedIn } = useUser();
   const [opened, { open, close }] = useDisclosure(false);
+  const { createLeague } = useLeagueMutations(close);
 
   const baseLinks = basicLinks.map(link => (
     <NavbarLink {...link} key={link.label} />
@@ -47,7 +49,7 @@ export function NavbarMinimal() {
   ));
 
   const handleCreateLeague = (leagueData: LeagueFormValues) => {
-    console.log(leagueData);
+    createLeague.mutate(leagueData);
   };
 
   return (

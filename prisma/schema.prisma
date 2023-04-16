@@ -11,8 +11,49 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Example {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+model Player {
+    id            String   @id @default(cuid())
+    firstName     String 
+    lastName      String
+    mmr           Int      @default(1000)
+    league        League   @relation(fields: [leagueId], references: [id])
+    leagueId      String
+    matchesAsHomePlayer Match[] @relation("homePlayer")
+    matchesAsAwayPlayer Match[] @relation("awayPlayer")
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+    deleted       Boolean  @default(false)
+
+    @@index([leagueId])
+}
+
+model League {
+    id            String   @id @default(cuid())
+    name          String 
+    ownerClerkId  String 
+    players       Player[]
+    isPrivate     Boolean
+    matches       Match[]  @relation("leagueMatches")
+    allowedUsers  String   @db.VarChar(2500) @default("")
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+}
+
+model Match {
+    id            String   @id @default(cuid())
+    homePlayerId  String
+    awayPlayerId  String
+    homeScore     Int
+    awayScore     Int
+    homePlayer    Player   @relation("homePlayer", fields: [homePlayerId], references: [id])
+    awayPlayer    Player   @relation("awayPlayer", fields: [awayPlayerId], references: [id])
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+    league        League   @relation("leagueMatches", fields: [leagueId], references: [id])
+    leagueId      String
+    overtime      Boolean
+
+    @@index([awayPlayerId])
+    @@index([homePlayerId])
+    @@index([leagueId])
 }

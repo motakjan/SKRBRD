@@ -18,12 +18,12 @@ export const LeagueModal: React.FC<PlayerModalProps> = ({
 }) => {
   const form = useForm<LeagueFormValues>({
     validate: {
-      leagueName: value => value.length < 1 && 'League name is required',
+      name: value => value.length < 1 && 'League name is required',
     },
   });
 
   return (
-    <Modal opened={opened} onClose={close} title={title} centered>
+    <Modal opened={opened} onClose={close} title={title} radius={6} centered>
       <form onSubmit={form.onSubmit(values => handleSubmit(values))}>
         <Flex direction="column" gap={10}>
           <TextInput
@@ -31,11 +31,12 @@ export const LeagueModal: React.FC<PlayerModalProps> = ({
             label="League name"
             description="Visible league name"
             withAsterisk
-            {...form.getInputProps('leagueName')}
+            {...form.getInputProps('name')}
           />
           <Checkbox
             mt="md"
             label="Private league"
+            color="indigo.5"
             {...form.getInputProps('isPrivate', { type: 'checkbox' })}
           />
 

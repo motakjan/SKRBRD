@@ -1,4 +1,4 @@
 export type LeagueFormValues = {
-  leagueName: string;
+  name: string;
   isPrivate: boolean;
 };

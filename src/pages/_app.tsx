@@ -16,6 +16,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       theme={{
         colorScheme: 'dark',
         fontFamily: 'Mulish, sans-serif',
+        loader: 'bars',
       }}
       withGlobalStyles
       withNormalizeCSS
