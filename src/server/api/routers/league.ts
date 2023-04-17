@@ -1,3 +1,4 @@
+import { TRPCError } from '@trpc/server';
 import {
   createTRPCRouter,
   privateProcedure,
@@ -5,10 +6,50 @@ import {
 } from '~/server/api/trpc';
 import {
   createLeagueSchema,
+  findLeagueSchema,
   getLeaguesByQuerySchema,
 } from '../schemas/leagueSchemas';
 
 export const leagueRouter = createTRPCRouter({
+  findLeague: publicProcedure
+    .input(findLeagueSchema)
+    .query(async ({ ctx, input: { leagueId } }) => {
+      const league = await ctx.prisma.league.findUnique({
+        where: { id: leagueId },
+        include: {
+          players: {
+            orderBy: { mmr: 'desc' },
+            where: { deleted: false },
+            include: {
+              matchesAsHomePlayer: true,
+              matchesAsAwayPlayer: true,
+            },
+          },
+          matches: {
+            orderBy: { createdAt: 'desc' },
+            include: {
+              homePlayer: true,
+              awayPlayer: true,
+            },
+            where: {
+              OR: [
+                { homePlayer: { deleted: false } },
+                { awayPlayer: { deleted: false } },
+              ],
+            },
+          },
+        },
+      });
+
+      if (!league) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'League not found',
+        });
+      }
+
+      return league;
+    }),
   create: privateProcedure
     .input(createLeagueSchema)
     .mutation(({ ctx, input: { isPrivate, name } }) => {

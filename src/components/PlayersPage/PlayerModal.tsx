@@ -1,6 +1,6 @@
 import { Button, Flex, Modal, NumberInput, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import React from 'react';
+import React, { useEffect } from 'react';
 import type { PlayerFormValues } from './PlayerModal.types';
 
 type PlayerModalProps = {
@@ -24,6 +24,11 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
   handleSubmit,
 }) => {
   const form = useForm<PlayerFormValues>({
+    initialValues: {
+      firstName: '',
+      lastName: '',
+      mmr: 1000,
+    },
     validate: {
       firstName: value => value.length < 1 && 'First name is required',
       lastName: value => value.length < 1 && 'Last name is required',
@@ -31,6 +36,18 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
         value < 0 || (value > 8000 && 'MMR needs to be between 0 and 8000'),
     },
   });
+
+  useEffect(() => {
+    if (editedPlayer) {
+      form.setValues({
+        firstName: editedPlayer.firstName,
+        lastName: editedPlayer.lastName,
+        mmr: editedPlayer.mmr,
+      });
+    } else {
+      form.reset();
+    }
+  }, [editedPlayer]);
 
   return (
     <Modal opened={opened} onClose={close} title={title} radius={6} centered>
@@ -40,7 +57,6 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
             placeholder="First name"
             label="First name"
             description="Players first name"
-            defaultValue={editedPlayer ? editedPlayer.firstName : ''}
             withAsterisk
             {...form.getInputProps('firstName')}
           />
@@ -48,7 +64,6 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
             placeholder="Last name"
             label="Last name"
             description="Players last name"
-            defaultValue={editedPlayer ? editedPlayer.lastName : ''}
             withAsterisk
             {...form.getInputProps('lastName')}
           />
@@ -56,7 +71,6 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
             placeholder="MMR"
             label="MMR"
             description="Players MMR (Skill coeficient)"
-            defaultValue={editedPlayer ? editedPlayer.mmr : 1000}
             withAsterisk
             {...form.getInputProps('mmr')}
           />

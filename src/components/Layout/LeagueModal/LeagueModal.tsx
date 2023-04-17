@@ -1,6 +1,5 @@
 import { Button, Checkbox, Flex, Modal, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { IconAward } from '@tabler/icons-react';
 import React from 'react';
 import { type LeagueFormValues } from './LeagueModal.types';
 
