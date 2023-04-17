@@ -33,7 +33,7 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
   });
 
   return (
-    <Modal opened={opened} onClose={close} title={title} centered>
+    <Modal opened={opened} onClose={close} title={title} radius={6} centered>
       <form onSubmit={form.onSubmit(values => handleSubmit(values))}>
         <Flex direction="column" gap={10}>
           <TextInput
