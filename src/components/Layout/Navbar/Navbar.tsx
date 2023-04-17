@@ -34,7 +34,11 @@ const tournamentLinks: NavLinkType[] = [
   { icon: IconTrophy, label: 'Tournaments', href: `/tournaments/${slug}` },
 ];
 
-export function NavbarMinimal() {
+type NavbarMinimalProps = {
+  hasLeague: boolean;
+};
+
+export const NavbarMinimal: React.FC<NavbarMinimalProps> = ({ hasLeague }) => {
   const { openSignIn } = useClerk();
   const { isSignedIn } = useUser();
   const [opened, { open, close }] = useDisclosure(false);
@@ -44,9 +48,11 @@ export function NavbarMinimal() {
     <NavbarLink {...link} key={link.label} />
   ));
 
-  const tourneyLinks = tournamentLinks.map((link, index) => (
-    <NavbarLink {...link} key={link.label} active={index === 2} />
-  ));
+  const tourneyLinks =
+    hasLeague &&
+    tournamentLinks.map((link, index) => (
+      <NavbarLink {...link} key={link.label} active={index === 2} />
+    ));
 
   const handleCreateLeague = (leagueData: LeagueFormValues) => {
     createLeague.mutate(leagueData);
@@ -108,4 +114,4 @@ export function NavbarMinimal() {
       />
     </Navbar>
   );
-}
+};

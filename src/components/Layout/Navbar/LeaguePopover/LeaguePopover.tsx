@@ -13,7 +13,7 @@ export const LeaguePopover = () => {
   const {
     data: leaguesFound,
     refetch,
-    isLoading,
+    isFetching,
   } = api.league.getLeaguesByQuery.useQuery(
     {
       query: value,
@@ -82,7 +82,7 @@ export const LeaguePopover = () => {
         </Text>
         <LeagueSearchResults
           leaguesFound={leaguesFound?.leagues || []}
-          isLoading={isLoading}
+          isLoading={isFetching}
           page={page}
           totalPages={totalPagesFound || 0}
           handlePreviousPage={handlePreviousPage}

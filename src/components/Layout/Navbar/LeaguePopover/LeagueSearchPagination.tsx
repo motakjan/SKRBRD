@@ -24,7 +24,7 @@ export const LeagueSearchPagination: React.FC<LeagueSearchPaginationProps> = ({
         icon={<IconArrowLeft size="1rem" />}
       />
       <Text fz="xs" fw={700} color="indigo.5">
-        {page}/{totalPages}
+        {page} of {totalPages}
       </Text>
       <LeaguePaginationButton
         disabled={page === totalPages || totalPages === 0}
