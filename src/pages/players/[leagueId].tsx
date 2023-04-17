@@ -5,7 +5,7 @@ import { IconPlus } from '@tabler/icons-react';
 
 import type { GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { PlayerCard } from '~/components/PlayersPage/PlayerCard';
 import { PlayerModal } from '~/components/PlayersPage/PlayerModal';
 import type { PlayerFormValues } from '~/components/PlayersPage/PlayerModal.types';
@@ -20,12 +20,26 @@ type PlayersPageProps = {
 const League: NextPage<PlayersPageProps> = ({ leagueId }) => {
   const [editedPlayerId, setEditedPlayerId] = useState<string>('');
   const [opened, { open, close }] = useDisclosure(false);
-  const { createPlayer, updatePlayer } = usePlayerMutations(close);
+  const { createPlayer, updatePlayer, deletePlayer } =
+    usePlayerMutations(close);
   const { data: league } = api.league.findLeague.useQuery({
     leagueId,
   });
 
   if (!league) return <div>Error while fetching data...</div>;
+
+  const openConfirmModal = (name: string, id: string) =>
+    modals.openConfirmModal({
+      title: 'Please confirm your action',
+      children: (
+        <Text size="sm">Are you sure you want to delete player {name}</Text>
+      ),
+      labels: { confirm: 'Confirm', cancel: 'Cancel' },
+      confirmProps: { color: 'red' },
+      onConfirm: () => {
+        deletePlayer.mutate({ id });
+      },
+    });
 
   const modalClose = () => {
     close();
@@ -80,28 +94,19 @@ const League: NextPage<PlayersPageProps> = ({ leagueId }) => {
             </Grid.Col>
           ))}
         </Grid>
-        <PlayerModal
-          opened={opened}
-          editedPlayer={editedPlayer}
-          close={modalClose}
-          handleSubmit={editedPlayer ? handleEditSubmit : handleCreateSubmit}
-          title={editedPlayer ? 'Edit Player' : 'Add Player'}
-        />
+        {opened && (
+          <PlayerModal
+            opened={opened}
+            editedPlayer={editedPlayer}
+            close={modalClose}
+            handleSubmit={editedPlayer ? handleEditSubmit : handleCreateSubmit}
+            title={editedPlayer ? 'Edit Player' : 'Add Player'}
+          />
+        )}
       </main>
     </>
   );
 };
-
-const openConfirmModal = (name: string) =>
-  modals.openConfirmModal({
-    title: 'Please confirm your action',
-    children: (
-      <Text size="sm">Are you sure you want to delete player {name}</Text>
-    ),
-    labels: { confirm: 'Confirm', cancel: 'Cancel' },
-    confirmProps: { color: 'red' },
-    onConfirm: () => console.log('Confirmed'),
-  });
 
 export const getStaticProps: GetStaticProps = async context => {
   const ssg = generateSSGHelper();

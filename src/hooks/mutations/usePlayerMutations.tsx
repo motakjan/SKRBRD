@@ -69,5 +69,30 @@ export const usePlayerMutations = (onSettled: () => void) => {
     ...commonOptions,
   });
 
-  return { createPlayer, updatePlayer };
+  const deletePlayer = api.player.delete.useMutation({
+    onSuccess: (_, __, context) => {
+      if (!context) return;
+
+      updateLoadingToast(
+        'Player deleted',
+        'Player has been successfully deleted',
+        context.toastId
+      );
+
+      void ctx.league.findLeague.invalidate();
+    },
+    onError: (_, __, context) => {
+      if (!context) return;
+
+      updateLoadingToast(
+        'Error',
+        'There has been an error doing your request. Please try again later.',
+        context.toastId,
+        false
+      );
+    },
+    ...commonOptions,
+  });
+
+  return { createPlayer, updatePlayer, deletePlayer };
 };

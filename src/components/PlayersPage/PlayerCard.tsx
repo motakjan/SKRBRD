@@ -4,7 +4,7 @@ import { IconPencil, IconTrash } from '@tabler/icons-react';
 type PlayerCardProps = {
   firstName: string;
   lastName: string;
-  onDeleteClick: (name: string) => void;
+  onDeleteClick: (name: string, id: string) => void;
   onEditClick: (id: string) => void;
   id: string;
 };
@@ -42,7 +42,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
           <ActionIcon
             variant="subtle"
             color="red.8"
-            onClick={() => onDeleteClick(`${firstName} ${lastName}`)}
+            onClick={() => onDeleteClick(`${firstName} ${lastName}`, id)}
           >
             <IconTrash size="1rem" />
           </ActionIcon>
