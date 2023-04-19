@@ -3,109 +3,43 @@ import { useDisclosure } from '@mantine/hooks';
 import { modals } from '@mantine/modals';
 import { IconPlus } from '@tabler/icons-react';
 
-import type { NextPage } from 'next';
+import type { GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
 import { useState } from 'react';
 import { PlayerCard } from '~/components/PlayersPage/PlayerCard';
 import { PlayerModal } from '~/components/PlayersPage/PlayerModal';
 import type { PlayerFormValues } from '~/components/PlayersPage/PlayerModal.types';
+import { usePlayerMutations } from '~/hooks/mutations/usePlayerMutations';
+import { api } from '~/utils/api';
+import { generateSSGHelper } from '~/utils/ssgHelper';
 
-const players = [
-  {
-    firstName: 'Jan',
-    lastName: 'Motak',
-    id: 'JM345',
-    mmr: Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000,
-  },
-  {
-    firstName: 'Anna',
-    lastName: 'Kowalski',
-    id: 'AK675',
-    mmr: Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000,
-  },
-  {
-    firstName: 'Emma',
-    lastName: 'Lee',
-    id: 'EL923',
-    mmr: Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000,
-  },
-  {
-    firstName: 'David',
-    lastName: 'Johnson',
-    id: 'DJ156',
-    mmr: Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000,
-  },
-  {
-    firstName: 'Sara',
-    lastName: 'Gonzalez',
-    id: 'SG821',
-    mmr: Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000,
-  },
-  {
-    firstName: 'Max',
-    lastName: 'Smith',
-    id: 'MS428',
-    mmr: Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000,
-  },
-  {
-    firstName: 'Maria',
-    lastName: 'Garcia',
-    id: 'MG764',
-    mmr: Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000,
-  },
-  {
-    firstName: 'Jack',
-    lastName: 'Brown',
-    id: 'JB267',
-    mmr: Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000,
-  },
-  {
-    firstName: 'Olivia',
-    lastName: 'Davis',
-    id: 'OD593',
-    mmr: Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000,
-  },
-  {
-    firstName: 'Alex',
-    lastName: 'Martinez',
-    id: 'AM194',
-    mmr: Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000,
-  },
-  {
-    firstName: 'Sophia',
-    lastName: 'Wilson',
-    id: 'SW753',
-    mmr: Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000,
-  },
-  {
-    firstName: 'Luke',
-    lastName: 'Taylor',
-    id: 'LT287',
-    mmr: Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000,
-  },
-  {
-    firstName: 'Isabella',
-    lastName: 'Hernandez',
-    id: 'IH865',
-    mmr: Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000,
-  },
-  {
-    firstName: 'Noah',
-    lastName: 'Thomas',
-    id: 'NT412',
-    mmr: Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000,
-  },
-  {
-    firstName: 'Emily',
-    lastName: 'Moore',
-    id: 'EM639',
-    mmr: Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000,
-  },
-];
+type PlayersPageProps = {
+  leagueId: string;
+};
 
-const League: NextPage = () => {
+const League: NextPage<PlayersPageProps> = ({ leagueId }) => {
   const [editedPlayerId, setEditedPlayerId] = useState<string>('');
   const [opened, { open, close }] = useDisclosure(false);
+  const { createPlayer, updatePlayer, deletePlayer } =
+    usePlayerMutations(close);
+  const { data: league } = api.league.findLeague.useQuery({
+    leagueId,
+  });
+
+  if (!league) return <div>Error while fetching data...</div>;
+
+  const openConfirmModal = (name: string, id: string) =>
+    modals.openConfirmModal({
+      title: 'Please confirm your action',
+      children: (
+        <Text size="sm">Are you sure you want to delete player {name}</Text>
+      ),
+      labels: { confirm: 'Confirm', cancel: 'Cancel' },
+      confirmProps: { color: 'red' },
+      onConfirm: () => {
+        deletePlayer.mutate({ id });
+      },
+    });
 
   const modalClose = () => {
     close();
@@ -113,24 +47,21 @@ const League: NextPage = () => {
   };
 
   const handleCreateSubmit = (playerValues: PlayerFormValues) => {
-    console.log(playerValues);
-    close();
+    createPlayer.mutate({ ...playerValues, leagueId });
   };
 
   const handleEditSubmit = (playerValues: PlayerFormValues) => {
-    console.log(playerValues);
-    close();
+    updatePlayer.mutate({ id: editedPlayerId, ...playerValues });
   };
 
   const handlePlayerEditClick = (playerId: string) => {
-    const player = players.find(p => p.id === playerId);
+    const player = league.players.find(p => p.id === playerId);
     if (!player) return;
-
     setEditedPlayerId(player.id);
     open();
   };
 
-  const editedPlayer = players.find(p => p.id === editedPlayerId);
+  const editedPlayer = league.players.find(p => p.id === editedPlayerId);
 
   return (
     <>
@@ -151,7 +82,7 @@ const League: NextPage = () => {
 
         <Text fz="sm">List of players in league and their administration</Text>
         <Grid sx={{ paddingTop: '2rem' }}>
-          {players.map(player => (
+          {league.players.map(player => (
             <Grid.Col md={6} lg={3} key={`card-${player.id}`}>
               <PlayerCard
                 firstName={player.firstName}
@@ -163,28 +94,39 @@ const League: NextPage = () => {
             </Grid.Col>
           ))}
         </Grid>
-
-        <PlayerModal
-          opened={opened}
-          editedPlayer={editedPlayer}
-          close={modalClose}
-          handleSubmit={editedPlayer ? handleCreateSubmit : handleEditSubmit}
-          title={editedPlayer ? 'Edit Player' : 'Add Player'}
-        />
+        {opened && (
+          <PlayerModal
+            opened={opened}
+            editedPlayer={editedPlayer}
+            close={modalClose}
+            handleSubmit={editedPlayer ? handleEditSubmit : handleCreateSubmit}
+            title={editedPlayer ? 'Edit Player' : 'Add Player'}
+          />
+        )}
       </main>
     </>
   );
 };
 
-const openConfirmModal = (name: string) =>
-  modals.openConfirmModal({
-    title: 'Please confirm your action',
-    children: (
-      <Text size="sm">Are you sure you want to delete player {name}</Text>
-    ),
-    labels: { confirm: 'Confirm', cancel: 'Cancel' },
-    confirmProps: { color: 'red' },
-    onConfirm: () => console.log('Confirmed'),
-  });
+export const getStaticProps: GetStaticProps = async context => {
+  const ssg = generateSSGHelper();
+
+  const leagueId = context.params?.leagueId;
+
+  if (typeof leagueId !== 'string') throw new Error('No leagueId');
+
+  await ssg.league.findLeague.prefetch({ leagueId });
+
+  return {
+    props: {
+      trpcState: ssg.dehydrate(),
+      leagueId,
+    },
+  };
+};
+
+export const getStaticPaths = () => {
+  return { paths: [], fallback: 'blocking' };
+};
 
 export default League;

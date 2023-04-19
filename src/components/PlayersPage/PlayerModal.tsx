@@ -24,6 +24,8 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
   handleSubmit,
 }) => {
   const form = useForm<PlayerFormValues>({
+    initialValues: editedPlayer,
+
     validate: {
       firstName: value => value.length < 1 && 'First name is required',
       lastName: value => value.length < 1 && 'Last name is required',
@@ -40,7 +42,6 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
             placeholder="First name"
             label="First name"
             description="Players first name"
-            defaultValue={editedPlayer ? editedPlayer.firstName : ''}
             withAsterisk
             {...form.getInputProps('firstName')}
           />
@@ -48,7 +49,6 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
             placeholder="Last name"
             label="Last name"
             description="Players last name"
-            defaultValue={editedPlayer ? editedPlayer.lastName : ''}
             withAsterisk
             {...form.getInputProps('lastName')}
           />
@@ -56,7 +56,6 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
             placeholder="MMR"
             label="MMR"
             description="Players MMR (Skill coeficient)"
-            defaultValue={editedPlayer ? editedPlayer.mmr : 1000}
             withAsterisk
             {...form.getInputProps('mmr')}
           />
@@ -66,7 +65,7 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
             color="indigo.5"
             sx={{ alignSelf: 'flex-end', marginTop: 15 }}
           >
-            Create player
+            {editedPlayer ? 'Edit player' : 'Create player'}
           </Button>
         </Flex>
       </form>
