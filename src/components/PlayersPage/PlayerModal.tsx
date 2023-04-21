@@ -62,7 +62,7 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
           <Button
             type="submit"
             variant="light"
-            color="indigo.5"
+            color="yellow.5"
             sx={{ alignSelf: 'flex-end', marginTop: 15 }}
           >
             {editedPlayer ? 'Edit player' : 'Create player'}

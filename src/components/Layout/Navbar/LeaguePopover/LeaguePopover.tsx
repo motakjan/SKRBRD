@@ -48,7 +48,7 @@ export const LeaguePopover = () => {
     <Popover width={250} trapFocus position="right" shadow="md" offset={20}>
       <Popover.Target>
         <ActionIcon
-          color="indigo.4"
+          color="yellow.4"
           variant="light"
           sx={theme => ({
             width: 30,

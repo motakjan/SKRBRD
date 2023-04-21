@@ -17,7 +17,7 @@ type PlayersPageProps = {
   leagueId: string;
 };
 
-const League: NextPage<PlayersPageProps> = ({ leagueId }) => {
+const PlayersPage: NextPage<PlayersPageProps> = ({ leagueId }) => {
   const [editedPlayerId, setEditedPlayerId] = useState<string>('');
   const [opened, { open, close }] = useDisclosure(false);
   const { createPlayer, updatePlayer, deletePlayer } =
@@ -129,4 +129,4 @@ export const getStaticPaths = () => {
   return { paths: [], fallback: 'blocking' };
 };
 
-export default League;
+export default PlayersPage;

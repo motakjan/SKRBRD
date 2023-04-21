@@ -15,7 +15,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
     <MantineProvider
       theme={{
         colorScheme: 'dark',
-        fontFamily: 'Mulish, sans-serif',
+        fontFamily: 'Nunito, sans-serif',
         loader: 'bars',
       }}
       withGlobalStyles

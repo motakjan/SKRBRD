@@ -1,4 +1,4 @@
-import { Center, Flex, Loader, Text } from '@mantine/core';
+import { Box, Center, Flex, Loader, Text } from '@mantine/core';
 import { type League } from '@prisma/client';
 import React, { useMemo } from 'react';
 import { LeagueSearchItem } from './LeagueSearchItem';
@@ -33,13 +33,14 @@ export const LeagueSearchResults: React.FC<LeagueSearchResultsProps> = ({
     <Flex direction="column">
       {isLoading ? (
         <Center h={100}>
-          <Loader size="sm" color="indigo.6" />
+          <Loader size="sm" color="yellow.6" />
         </Center>
       ) : (
         <Flex direction="column">
           {leagueItems.length > 0 ? (
             <>
-              {leagueItems}
+              <Box sx={{ height: '7rem' }}>{leagueItems}</Box>
+
               <LeagueSearchPagination
                 page={page}
                 totalPages={totalPages}

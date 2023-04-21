@@ -36,14 +36,14 @@ export const LeagueModal: React.FC<PlayerModalProps> = ({
           <Checkbox
             mt="md"
             label="Private league"
-            color="indigo.5"
+            color="yellow.5"
             {...form.getInputProps('isPrivate', { type: 'checkbox' })}
           />
 
           <Button
             type="submit"
             variant="light"
-            color="indigo.5"
+            color="yellow.5"
             sx={{ alignSelf: 'flex-end', marginTop: 15 }}
           >
             Create league
