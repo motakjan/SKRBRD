@@ -1,5 +1,6 @@
 import { Button, Flex, Grid, Text, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { IconPlus } from '@tabler/icons-react';
 import type { GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -38,9 +39,7 @@ const LeaguePage: NextPage<PlayersPageProps> = ({ leagueId }) => {
       </Head>
       <main>
         <Flex gap={10} align="center">
-          <Title order={1} c="white">
-            League {league.name}
-          </Title>
+          <Title order={1}>League {league.name}</Title>
         </Flex>
         <Text fz="sm">
           Main information page with all the information about the league
@@ -52,9 +51,10 @@ const LeaguePage: NextPage<PlayersPageProps> = ({ leagueId }) => {
               <Title order={4}>Standings</Title>
               <StandingsTable players={league.players} />
               <Button
-                variant="light"
-                color="gray.4"
-                sx={{ alignSelf: 'flex-end', marginTop: 15 }}
+                color="orange.5 "
+                variant="subtle"
+                sx={{ alignSelf: 'flex-end', marginTop: 15, fontWeight: 700 }}
+                leftIcon={<IconPlus size="1rem" />}
                 onClick={open}
               >
                 Add match

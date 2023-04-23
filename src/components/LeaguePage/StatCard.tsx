@@ -12,7 +12,9 @@ export const StatCard: React.FC<StatCardProps> = ({ stat }) => {
       key={stat.name}
       sx={theme => ({
         background:
-          theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.white,
+          theme.colorScheme === 'dark'
+            ? theme.colors.dark[8]
+            : theme.colors.gray[0],
         padding: '1rem',
         borderRadius: '8px',
         width: '11rem',
@@ -22,9 +24,7 @@ export const StatCard: React.FC<StatCardProps> = ({ stat }) => {
       })}
     >
       <Text fz="sm">{stat.name}</Text>
-      <Title order={1} color="white">
-        {stat.stat}
-      </Title>
+      <Title order={1}>{stat.stat}</Title>
       <Text fz="sm">
         {stat.player?.firstName} {stat.player?.lastName}
       </Text>

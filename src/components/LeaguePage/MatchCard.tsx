@@ -9,13 +9,16 @@ type MatchCardProps = {
 };
 
 export const MatchCard: React.FC<MatchCardProps> = ({ matchInfo }) => {
+  const awayWin = matchInfo.awayScore > matchInfo.homeScore;
   return (
     <Paper
       radius="md"
       p="sm"
       sx={theme => ({
         background:
-          theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.white,
+          theme.colorScheme === 'dark'
+            ? theme.colors.dark[8]
+            : theme.colors.gray[0],
       })}
     >
       <Flex align="center" gap="md">
@@ -23,7 +26,10 @@ export const MatchCard: React.FC<MatchCardProps> = ({ matchInfo }) => {
           <Flex
             align="center"
             justify="space-between"
-            c={matchInfo.awayScore > matchInfo.homeScore ? 'gray.7' : 'white'}
+            sx={theme => ({
+              color: awayWin ? theme.colors.gray[6] : undefined,
+              fontWeight: awayWin ? undefined : 700,
+            })}
           >
             <Flex direction="column">
               <Text size="xs">Home</Text>
@@ -35,7 +41,10 @@ export const MatchCard: React.FC<MatchCardProps> = ({ matchInfo }) => {
           <Flex
             align="center"
             justify="space-between"
-            c={matchInfo.awayScore < matchInfo.homeScore ? 'gray.7' : 'white'}
+            sx={theme => ({
+              color: awayWin ? undefined : theme.colors.gray[6],
+              fontWeight: awayWin ? 600 : undefined,
+            })}
           >
             <Flex direction="column">
               <Text size="xs">Away</Text>
@@ -46,13 +55,13 @@ export const MatchCard: React.FC<MatchCardProps> = ({ matchInfo }) => {
         </Flex>
         <Divider color="gray.8" size="md" orientation="vertical" />
         <Flex direction="column" gap={5} align="center" w="8rem">
-          <Text size="xs" c="white">
+          <Text size="xs" fw={700}>
             Date played
           </Text>
           <Text size="xs">
             {matchInfo.createdAt.toLocaleDateString('cs-CZ')}
           </Text>
-          <Text size="xs" c="white">
+          <Text size="xs" fw={700}>
             Match type
           </Text>
           <Text size="xs">Normal {matchInfo.overtime ? 'OT' : 'FT'}</Text>

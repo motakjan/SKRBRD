@@ -61,7 +61,6 @@ export const LeaguePopover = () => {
     >
       <Popover.Target>
         <ActionIcon
-          color="yellow.4"
           variant="light"
           onClick={() => setOpened(o => !o)}
           sx={theme => ({
@@ -69,6 +68,8 @@ export const LeaguePopover = () => {
             marginBottom: 15,
             height: 30,
             borderRadius: theme.radius.md,
+            backgroundColor: theme.fn.rgba(theme.colors.yellow[5], 0.2),
+            color: theme.colors.yellow[8],
           })}
         >
           <IconSelect size="1.2rem" stroke={1.5} />

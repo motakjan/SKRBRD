@@ -76,10 +76,8 @@ const PlayersPage: NextPage<PlayersPageProps> = ({ leagueId }) => {
       </Head>
       <main>
         <Flex gap={10} align="center">
-          <Title order={1} c="white">
-            Players
-          </Title>
-          <ActionIcon variant="light" color="gray.1" radius="md" onClick={open}>
+          <Title order={1}>Players</Title>
+          <ActionIcon variant="light" radius="md" onClick={open}>
             <IconPlus size="1rem" />
           </ActionIcon>
         </Flex>

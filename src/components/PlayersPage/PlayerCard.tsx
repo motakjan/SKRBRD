@@ -27,7 +27,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
         backgroundColor:
           theme.colorScheme === 'dark'
             ? theme.colors.dark[8]
-            : theme.colors.yellow[1],
+            : theme.colors.gray[0],
       })}
     >
       <Flex justify="space-between" align="center">

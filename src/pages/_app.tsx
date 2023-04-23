@@ -4,39 +4,58 @@ import { api } from '~/utils/api';
 
 import { ClerkProvider } from '@clerk/nextjs';
 import { dark } from '@clerk/themes';
-import { MantineProvider } from '@mantine/core';
+import {
+  ColorSchemeProvider,
+  MantineProvider,
+  type ColorScheme,
+} from '@mantine/core';
+import { useLocalStorage } from '@mantine/hooks';
 import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
 import '~/styles/globals.css';
 import { Layout } from '../components/Layout/Layout';
 
 const MyApp: AppType = ({ Component, pageProps }) => {
+  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
+    key: 'mantine-color-scheme',
+    defaultValue: 'light',
+    getInitialValueInEffect: true,
+  });
+
+  const toggleColorScheme = (value?: ColorScheme) =>
+    setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
+
   return (
-    <MantineProvider
-      theme={{
-        colorScheme: 'dark',
-        fontFamily: 'Nunito, sans-serif',
-        loader: 'bars',
-      }}
-      withGlobalStyles
-      withNormalizeCSS
+    <ColorSchemeProvider
+      colorScheme={colorScheme}
+      toggleColorScheme={toggleColorScheme}
     >
-      <ClerkProvider
-        {...pageProps}
-        appearance={{
-          baseTheme: dark,
+      <MantineProvider
+        theme={{
+          colorScheme,
+          fontFamily: 'Nunito, sans-serif',
+          loader: 'bars',
         }}
+        withGlobalStyles
+        withNormalizeCSS
       >
-        <ModalsProvider>
-          <Layout>
-            <>
-              <Notifications />
-              <Component {...pageProps} />
-            </>
-          </Layout>
-        </ModalsProvider>
-      </ClerkProvider>
-    </MantineProvider>
+        <ClerkProvider
+          {...pageProps}
+          appearance={{
+            baseTheme: dark,
+          }}
+        >
+          <ModalsProvider>
+            <Layout>
+              <>
+                <Notifications />
+                <Component {...pageProps} />
+              </>
+            </Layout>
+          </ModalsProvider>
+        </ClerkProvider>
+      </MantineProvider>
+    </ColorSchemeProvider>
   );
 };
 
