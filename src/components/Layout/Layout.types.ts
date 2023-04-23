@@ -19,4 +19,5 @@ export type NavLinkType = {
   icon: TablerIcon;
   label: string;
   href: string;
+  active?: boolean;
 };

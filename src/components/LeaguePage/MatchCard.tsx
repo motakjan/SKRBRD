@@ -20,7 +20,11 @@ export const MatchCard: React.FC<MatchCardProps> = ({ matchInfo }) => {
     >
       <Flex align="center" gap="md">
         <Flex direction="column" gap={5} w="100%">
-          <Flex align="center" justify="space-between" c="white">
+          <Flex
+            align="center"
+            justify="space-between"
+            c={matchInfo.awayScore > matchInfo.homeScore ? 'gray.7' : 'white'}
+          >
             <Flex direction="column">
               <Text size="xs">Home</Text>
               <Text size="md">{`${matchInfo.homePlayer.firstName} ${matchInfo.homePlayer.lastName}`}</Text>
@@ -28,7 +32,11 @@ export const MatchCard: React.FC<MatchCardProps> = ({ matchInfo }) => {
             <Text sx={{ fontSize: 32 }}>{matchInfo.homeScore}</Text>
           </Flex>
 
-          <Flex align="center" justify="space-between" c="gray.7">
+          <Flex
+            align="center"
+            justify="space-between"
+            c={matchInfo.awayScore < matchInfo.homeScore ? 'gray.7' : 'white'}
+          >
             <Flex direction="column">
               <Text size="xs">Away</Text>
               <Text size="md">{`${matchInfo.awayPlayer.firstName} ${matchInfo.awayPlayer.lastName}`}</Text>

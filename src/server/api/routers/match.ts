@@ -1,7 +1,7 @@
 import { TRPCError } from '@trpc/server';
 
 import { createTRPCRouter, privateProcedure } from '~/server/api/trpc';
-import { calculateNewMMR } from '~/utils/elo';
+import { calculateNewMMR, calculateStreak } from '~/utils/elo';
 import { createMatchSchema } from '../schemas/matchSchemas';
 
 export const matchRouter = createTRPCRouter({
@@ -28,8 +28,12 @@ export const matchRouter = createTRPCRouter({
         });
       }
 
-      const [homePlayer, awayPlayer] = await ctx.prisma.player.findMany({
-        where: { id: { in: [homePlayerId, awayPlayerId] } },
+      const homePlayer = await ctx.prisma.player.findUnique({
+        where: { id: homePlayerId },
+      });
+
+      const awayPlayer = await ctx.prisma.player.findUnique({
+        where: { id: awayPlayerId },
       });
 
       if (!homePlayer || !awayPlayer || homePlayer.id === awayPlayer.id) {
@@ -45,6 +49,20 @@ export const matchRouter = createTRPCRouter({
         homeScore,
         awayScore
       );
+
+      const [homeStreak, awayStreak] = calculateStreak(
+        homePlayer.streak,
+        awayPlayer.streak,
+        homeScore,
+        awayScore
+      );
+
+      console.log({
+        homeOldRating: homePlayer.mmr,
+        homeNewRating,
+        awayNewRating,
+        awayOldRating: awayPlayer.mmr,
+      });
 
       if (!homeNewRating || !awayNewRating) {
         throw new TRPCError({
@@ -68,12 +86,14 @@ export const matchRouter = createTRPCRouter({
           where: { id: homePlayerId },
           data: {
             mmr: Math.round(homeNewRating),
+            streak: homeStreak,
           },
         }),
         ctx.prisma.player.update({
           where: { id: awayPlayerId },
           data: {
             mmr: Math.round(awayNewRating),
+            streak: awayStreak,
           },
         }),
       ]);

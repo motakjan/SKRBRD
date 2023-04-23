@@ -17,6 +17,11 @@ export const LeagueModal: React.FC<PlayerModalProps> = ({
   handleSubmit,
 }) => {
   const form = useForm<LeagueFormValues>({
+    initialValues: {
+      name: '',
+      isPrivate: false,
+    },
+
     validate: {
       name: value => value.length < 1 && 'League name is required',
     },

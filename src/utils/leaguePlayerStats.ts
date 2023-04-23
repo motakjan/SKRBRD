@@ -25,6 +25,8 @@ type LeagueStatsObj = {
   bestAvgGoalsAgainst: number;
   bestScorePlayer: PlayerWithMatches | null;
   bestScore: number;
+  bestWinstreakPlayer: PlayerWithMatches | null;
+  bestWinstreak: number;
 };
 
 export const getLeagueStats = (league: CompleteLeague) => {
@@ -37,6 +39,8 @@ export const getLeagueStats = (league: CompleteLeague) => {
     bestAvgGoalsAgainst: Infinity,
     bestScorePlayer: null,
     bestScore: -Infinity,
+    bestWinstreakPlayer: null,
+    bestWinstreak: 0,
   };
 
   for (const player of league.players) {
@@ -52,8 +56,16 @@ export const getLeagueStats = (league: CompleteLeague) => {
     const matchesPlayed =
       player.matchesAsAwayPlayer.length + player.matchesAsHomePlayer.length;
 
-    if (matchesPlayed < 3) {
+    if (matchesPlayed < 1) {
       continue;
+    }
+
+    if (stats.bestWinstreakPlayer === null) {
+      stats.bestWinstreakPlayer = player;
+      stats.bestWinstreak = player.streak;
+    } else if (player.streak > stats.bestWinstreak) {
+      stats.bestWinstreakPlayer = player;
+      stats.bestWinstreak = player.streak;
     }
 
     if (winrate > stats.bestWinrate) {
@@ -106,6 +118,11 @@ export const getLeagueStats = (league: CompleteLeague) => {
       player: stats.bestScorePlayer,
       stat: stats.bestScore.toString(),
       name: 'Best score',
+    },
+    {
+      player: stats.bestWinstreakPlayer,
+      stat: stats.bestWinstreak.toString(),
+      name: 'Winstreak',
     },
   ];
 };

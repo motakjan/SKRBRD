@@ -24,7 +24,7 @@ import { LeaguePopover } from './LeaguePopover/LeaguePopover';
 import { NavbarLink } from './NavbarLink';
 
 const basicLinks: NavLinkType[] = [
-  { icon: IconHome2, label: 'Home', href: `/` },
+  { icon: IconHome2, label: 'Home', href: `/`, active: false },
 ];
 
 type NavbarMinimalProps = {
@@ -70,10 +70,15 @@ export const NavbarMinimal: React.FC<NavbarMinimalProps> = ({ hasLeague }) => {
     },
   ];
 
+  const isActive = (href: string) => {
+    const regex = new RegExp(`^${href}(\\/|$)`, 'i');
+    return router.asPath.match(regex) ? true : false;
+  };
+
   const tourneyLinks =
     hasLeague &&
-    tournamentLinks.map((link, index) => (
-      <NavbarLink {...link} key={link.label} active={index === 2} />
+    tournamentLinks.map(link => (
+      <NavbarLink {...link} key={link.label} active={isActive(link.href)} />
     ));
 
   const handleCreateLeague = (leagueData: LeagueFormValues) => {

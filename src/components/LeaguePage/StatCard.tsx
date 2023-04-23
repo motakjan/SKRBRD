@@ -13,9 +13,9 @@ export const StatCard: React.FC<StatCardProps> = ({ stat }) => {
       sx={theme => ({
         background:
           theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.white,
-        width: '10rem',
         padding: '1rem',
         borderRadius: '8px',
+        width: '11rem',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',

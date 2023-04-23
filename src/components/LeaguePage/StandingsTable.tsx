@@ -1,4 +1,4 @@
-import { Table, Text } from '@mantine/core';
+import { Badge, Table, Text } from '@mantine/core';
 import React from 'react';
 import { type PlayerWithMatches } from '~/types/score.types';
 import { getPlayerScore } from '~/utils/scoreCalculations';
@@ -8,6 +8,17 @@ type StandingsTableProps = {
 };
 
 export const StandingsTable: React.FC<StandingsTableProps> = ({ players }) => {
+  const getBadgeColor = (score: number) => {
+    switch (Math.sign(score)) {
+      case 1:
+        return 'teal.5';
+      case -1:
+        return 'red.5';
+      default:
+        return 'yellow.5';
+    }
+  };
+
   const rows = players.map((player, index) => {
     const {
       goalsScored,
@@ -32,12 +43,15 @@ export const StandingsTable: React.FC<StandingsTableProps> = ({ players }) => {
         <td>
           <Text fw={700}>{player.mmr}</Text>
         </td>
+        <td style={{ textAlign: 'center' }}>
+          <Badge color={getBadgeColor(player.streak)}>{player.streak}</Badge>
+        </td>
       </tr>
     );
   });
 
   return (
-    <Table striped>
+    <Table horizontalSpacing="xl" striped>
       <thead>
         <tr>
           <th>Position</th>
@@ -45,6 +59,7 @@ export const StandingsTable: React.FC<StandingsTableProps> = ({ players }) => {
           <th>W/OTW/OTL/L</th>
           <th>Score</th>
           <th>MMR</th>
+          <th style={{ textAlign: 'center' }}>Streak</th>
         </tr>
       </thead>
       <tbody>{rows}</tbody>

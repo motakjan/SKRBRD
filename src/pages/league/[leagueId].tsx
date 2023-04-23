@@ -47,7 +47,7 @@ const LeaguePage: NextPage<PlayersPageProps> = ({ leagueId }) => {
         </Text>
 
         <Grid pt="2rem" gutter="xl">
-          <Grid.Col md={12} lg={5}>
+          <Grid.Col md={12} xl={6}>
             <Flex direction="column" gap="0.8rem">
               <Title order={4}>Standings</Title>
               <StandingsTable players={league.players} />
@@ -62,17 +62,19 @@ const LeaguePage: NextPage<PlayersPageProps> = ({ leagueId }) => {
             </Flex>
           </Grid.Col>
 
-          <Grid.Col md={6} lg={4}>
+          <Grid.Col md={6} xl={3}>
             <Title order={4} pb="0.6rem">
               Statistics
             </Title>
             <Flex gap={16} wrap="wrap">
-              {stats.map(stat => (
-                <StatCard key={`stat_card_${stat.name}`} stat={stat} />
-              ))}
+              {stats.length > 0
+                ? stats.map(stat => (
+                    <StatCard key={`stat_card_${stat.name}`} stat={stat} />
+                  ))
+                : 'No stats yet. At least one player needs to have one or more matches played.'}
             </Flex>
           </Grid.Col>
-          <Grid.Col md={6} lg={3}>
+          <Grid.Col md={6} xl={3}>
             <Flex direction="column" gap="sm">
               <Title order={4}>Match history</Title>
               {league?.matches.slice(0, 5).map(match => (
