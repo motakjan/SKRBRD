@@ -12,20 +12,20 @@ export const useStyles = createStyles(theme => ({
     color:
       theme.colorScheme === 'dark'
         ? theme.colors.dark[0]
-        : theme.colors.gray[8],
+        : theme.colors.yellow[8],
 
     '&:hover': {
       backgroundColor:
         theme.colorScheme === 'dark'
           ? theme.colors.dark[5]
-          : theme.colors.gray[0],
+          : theme.colors.yellow[0],
     },
   },
 
   active: {
     '&, &:hover': {
-      backgroundColor: theme.fn.rgba(theme.colors.indigo[5], 0.2),
-      color: theme.colors.indigo[5],
+      backgroundColor: theme.fn.rgba(theme.colors.yellow[5], 0.2),
+      color: theme.colors.yellow[5],
     },
   },
 }));

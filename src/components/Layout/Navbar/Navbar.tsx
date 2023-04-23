@@ -13,6 +13,8 @@ import {
   IconUsers,
 } from '@tabler/icons-react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import { IconButton } from '~/components/UI/IconButton';
 import { useLeagueMutations } from '~/hooks/mutations/useLeagueMutations';
 import type { NavLinkType } from '../Layout.types';
@@ -21,17 +23,8 @@ import { type LeagueFormValues } from '../LeagueModal/LeagueModal.types';
 import { LeaguePopover } from './LeaguePopover/LeaguePopover';
 import { NavbarLink } from './NavbarLink';
 
-const slug = 'asdhuasdasd4as5d45as4d5as4d5a';
-
 const basicLinks: NavLinkType[] = [
   { icon: IconHome2, label: 'Home', href: `/` },
-];
-
-const tournamentLinks: NavLinkType[] = [
-  { icon: IconTimeline, label: 'League', href: `/league/${slug}` },
-  { icon: IconUsers, label: 'Players', href: `/players/${slug}` },
-  { icon: IconCalendarDue, label: 'Match history', href: `/history/${slug}` },
-  { icon: IconTrophy, label: 'Tournaments', href: `/tournaments/${slug}` },
 ];
 
 type NavbarMinimalProps = {
@@ -43,10 +36,39 @@ export const NavbarMinimal: React.FC<NavbarMinimalProps> = ({ hasLeague }) => {
   const { isSignedIn } = useUser();
   const [opened, { open, close }] = useDisclosure(false);
   const { createLeague } = useLeagueMutations(close);
+  const router = useRouter();
+  const leagueId = router.query.leagueId as string;
 
   const baseLinks = basicLinks.map(link => (
     <NavbarLink {...link} key={link.label} />
   ));
+
+  useEffect(() => {
+    close();
+  }, [router.pathname, close]);
+
+  const tournamentLinks: NavLinkType[] = [
+    {
+      icon: IconTimeline,
+      label: 'League',
+      href: `/league/${leagueId}`,
+    },
+    {
+      icon: IconUsers,
+      label: 'Players',
+      href: `/players/${leagueId}`,
+    },
+    {
+      icon: IconCalendarDue,
+      label: 'Match history',
+      href: `/history/${leagueId}`,
+    },
+    {
+      icon: IconTrophy,
+      label: 'Tournaments',
+      href: `/tournaments/${leagueId}`,
+    },
+  ];
 
   const tourneyLinks =
     hasLeague &&

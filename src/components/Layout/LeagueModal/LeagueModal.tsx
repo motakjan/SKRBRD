@@ -1,4 +1,4 @@
-import { Button, Checkbox, Flex, Modal, TextInput } from '@mantine/core';
+import { Button, Flex, Modal, Switch, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import React from 'react';
 import { type LeagueFormValues } from './LeagueModal.types';
@@ -33,17 +33,18 @@ export const LeagueModal: React.FC<PlayerModalProps> = ({
             withAsterisk
             {...form.getInputProps('name')}
           />
-          <Checkbox
+          <Switch
             mt="md"
             label="Private league"
-            color="indigo.5"
+            description="League will be accessible only by allowed users"
+            color="yellow.5"
             {...form.getInputProps('isPrivate', { type: 'checkbox' })}
           />
 
           <Button
             type="submit"
             variant="light"
-            color="indigo.5"
+            color="yellow.5"
             sx={{ alignSelf: 'flex-end', marginTop: 15 }}
           >
             Create league

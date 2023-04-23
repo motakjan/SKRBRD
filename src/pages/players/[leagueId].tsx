@@ -8,8 +8,8 @@ import Head from 'next/head';
 import { useState } from 'react';
 import { PlayerCard } from '~/components/PlayersPage/PlayerCard';
 import { PlayerModal } from '~/components/PlayersPage/PlayerModal';
-import type { PlayerFormValues } from '~/components/PlayersPage/PlayerModal.types';
 import { usePlayerMutations } from '~/hooks/mutations/usePlayerMutations';
+import type { PlayerFormValues } from '~/types/player.types';
 import { api } from '~/utils/api';
 import { generateSSGHelper } from '~/utils/ssgHelper';
 
@@ -17,12 +17,16 @@ type PlayersPageProps = {
   leagueId: string;
 };
 
-const League: NextPage<PlayersPageProps> = ({ leagueId }) => {
+const PlayersPage: NextPage<PlayersPageProps> = ({ leagueId }) => {
   const [editedPlayerId, setEditedPlayerId] = useState<string>('');
   const [opened, { open, close }] = useDisclosure(false);
-  const { createPlayer, updatePlayer, deletePlayer } =
-    usePlayerMutations(close);
-  const { data: league } = api.league.findLeague.useQuery({
+  const { createPlayer, updatePlayer, deletePlayer } = usePlayerMutations(
+    () => {
+      close();
+      setEditedPlayerId('');
+    }
+  );
+  const { data: { league } = {} } = api.league.findLeague.useQuery({
     leagueId,
   });
 
@@ -88,6 +92,7 @@ const League: NextPage<PlayersPageProps> = ({ leagueId }) => {
                 firstName={player.firstName}
                 lastName={player.lastName}
                 id={player.id}
+                loading={deletePlayer.isLoading}
                 onEditClick={handlePlayerEditClick}
                 onDeleteClick={openConfirmModal}
               />
@@ -98,6 +103,9 @@ const League: NextPage<PlayersPageProps> = ({ leagueId }) => {
           <PlayerModal
             opened={opened}
             editedPlayer={editedPlayer}
+            loading={
+              editedPlayer ? updatePlayer.isLoading : createPlayer.isLoading
+            }
             close={modalClose}
             handleSubmit={editedPlayer ? handleEditSubmit : handleCreateSubmit}
             title={editedPlayer ? 'Edit Player' : 'Add Player'}
@@ -129,4 +137,4 @@ export const getStaticPaths = () => {
   return { paths: [], fallback: 'blocking' };
 };
 
-export default League;
+export default PlayersPage;

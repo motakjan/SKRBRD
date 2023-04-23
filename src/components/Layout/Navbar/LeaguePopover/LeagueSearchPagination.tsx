@@ -23,7 +23,7 @@ export const LeagueSearchPagination: React.FC<LeagueSearchPaginationProps> = ({
         onClick={handlePreviousPage}
         icon={<IconArrowLeft size="1rem" />}
       />
-      <Text fz="xs" fw={700} color="indigo.5">
+      <Text fz="xs" fw={700} color="yellow.5">
         {page} of {totalPages}
       </Text>
       <LeaguePaginationButton

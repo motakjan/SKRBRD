@@ -4,7 +4,7 @@ import React from 'react';
 export const Loading = () => {
   return (
     <LoadingOverlay
-      loaderProps={{ size: 'lg', color: 'indigo.5' }}
+      loaderProps={{ size: 'lg', color: 'yellow.5' }}
       visible={true}
       overlayBlur={1}
       transitionDuration={500}
