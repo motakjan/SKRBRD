@@ -47,7 +47,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ matchInfo }) => {
           <Text size="xs" c="white">
             Match type
           </Text>
-          <Text size="xs">Normal</Text>
+          <Text size="xs">Normal {matchInfo.overtime ? 'OT' : 'FT'}</Text>
         </Flex>
       </Flex>
     </Paper>

@@ -1,12 +1,15 @@
 import { ActionIcon, Popover, Text, TextInput } from '@mantine/core';
 import { useDebouncedState } from '@mantine/hooks';
 import { IconSelect } from '@tabler/icons-react';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { api } from '~/utils/api';
 import { LeagueSearchResults } from './LeagueSearchResults';
 
 export const LeaguePopover = () => {
   const [value, setValue] = useDebouncedState('', 500);
+  const [opened, setOpened] = useState<boolean>(false);
+  const router = useRouter();
   const [page, setPage] = useState<number>(1);
   const take = 5;
 
@@ -34,6 +37,8 @@ export const LeaguePopover = () => {
     setPage(1);
   }, [value]);
 
+  useEffect(() => setOpened(false), [router.pathname]);
+
   const handlePreviousPage = () => {
     setPage((prevPage: number) => prevPage - 1);
   };
@@ -45,11 +50,20 @@ export const LeaguePopover = () => {
   const totalPagesFound = leaguesFound && Math.ceil(leaguesFound?.count / take);
 
   return (
-    <Popover width={250} trapFocus position="right" shadow="md" offset={20}>
+    <Popover
+      width={250}
+      trapFocus
+      position="right"
+      shadow="md"
+      offset={20}
+      opened={opened}
+      onChange={setOpened}
+    >
       <Popover.Target>
         <ActionIcon
           color="yellow.4"
           variant="light"
+          onClick={() => setOpened(o => !o)}
           sx={theme => ({
             width: 30,
             marginBottom: 15,

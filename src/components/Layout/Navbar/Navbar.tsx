@@ -14,6 +14,7 @@ import {
 } from '@tabler/icons-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import { IconButton } from '~/components/UI/IconButton';
 import { useLeagueMutations } from '~/hooks/mutations/useLeagueMutations';
 import type { NavLinkType } from '../Layout.types';
@@ -41,6 +42,10 @@ export const NavbarMinimal: React.FC<NavbarMinimalProps> = ({ hasLeague }) => {
   const baseLinks = basicLinks.map(link => (
     <NavbarLink {...link} key={link.label} />
   ));
+
+  useEffect(() => {
+    close();
+  }, [router.pathname, close]);
 
   const tournamentLinks: NavLinkType[] = [
     {

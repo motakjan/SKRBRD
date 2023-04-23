@@ -4,6 +4,7 @@ import {
   privateProcedure,
   publicProcedure,
 } from '~/server/api/trpc';
+import { getLeagueStats, type LeagueStats } from '~/utils/leaguePlayerStats';
 import {
   createLeagueSchema,
   findLeagueSchema,
@@ -48,7 +49,9 @@ export const leagueRouter = createTRPCRouter({
         });
       }
 
-      return league;
+      const stats: LeagueStats[] = getLeagueStats(league);
+
+      return { league, stats };
     }),
   create: privateProcedure
     .input(createLeagueSchema)

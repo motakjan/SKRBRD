@@ -1,65 +1,33 @@
-import { Button, Flex, Grid, Table, Text, Title } from '@mantine/core';
+import { Button, Flex, Grid, Text, Title } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import type { GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import { MatchCard } from '~/components/LeaguePage/MatchCard';
+import { MatchModal } from '~/components/LeaguePage/MatchModal';
+import { StandingsTable } from '~/components/LeaguePage/StandingsTable';
 import { StatCard } from '~/components/LeaguePage/StatCard';
+import { useMatchMutations } from '~/hooks/mutations/useMatchMutations';
+import { type MatchFormValues } from '~/types/match.types';
 import { api } from '~/utils/api';
-import { getPlayerScore } from '~/utils/scoreCalculations';
 import { generateSSGHelper } from '~/utils/ssgHelper';
 
 type PlayersPageProps = {
   leagueId: string;
 };
 
-type Stats = {
-  name: string;
-  playerName: string;
-  score: string;
-};
-
 const LeaguePage: NextPage<PlayersPageProps> = ({ leagueId }) => {
-  const { data: league } = api.league.findLeague.useQuery({
+  const [opened, { open, close }] = useDisclosure(false);
+  const { createMatch } = useMatchMutations(close);
+  const { data: { league, stats } = {} } = api.league.findLeague.useQuery({
     leagueId,
   });
 
-  if (!league) return <div>Error while fetching data...</div>;
+  if (!league || !stats) return <div>Error while fetching data...</div>;
 
-  const rows = league.players.map((player, index) => {
-    const {
-      goalsScored,
-      goalsScoredAgainst,
-      regularWins,
-      otWins,
-      regularLosses,
-      otLosses,
-    } = getPlayerScore(player);
-    return (
-      <tr key={`table_row_for_${player.id}`}>
-        <td>{index + 1}</td>
-        <td>
-          {player.firstName} {player.lastName}
-        </td>
-        <td>
-          {regularWins}-{otWins}-{otLosses}-{regularLosses}
-        </td>
-        <td>
-          {goalsScored}-{goalsScoredAgainst}
-        </td>
-        <td>
-          <Text fw={700}>{player.mmr}</Text>
-        </td>
-      </tr>
-    );
-  });
-
-  const stats: Stats[] = [
-    { name: 'Winrate', score: '78%', playerName: 'Jan Motak' },
-    { name: 'Average goals', score: '4.2', playerName: 'Peter Smith' },
-    { name: 'Average goals against', score: '1.5', playerName: 'Mike Yard' },
-    { name: 'Largest winning streak', score: '8', playerName: 'Jan Motak' },
-    { name: 'Leader', score: '10-8', playerName: 'Jan Motak' },
-  ];
+  const handleCreateSubmit = (matchValues: MatchFormValues) => {
+    createMatch.mutate({ leagueId, ...matchValues });
+  };
 
   return (
     <>
@@ -82,22 +50,12 @@ const LeaguePage: NextPage<PlayersPageProps> = ({ leagueId }) => {
           <Grid.Col md={12} lg={5}>
             <Flex direction="column" gap="0.8rem">
               <Title order={4}>Standings</Title>
-              <Table striped>
-                <thead>
-                  <tr>
-                    <th>Position</th>
-                    <th>Name</th>
-                    <th>W/OTW/OTL/L</th>
-                    <th>Score</th>
-                    <th>MMR</th>
-                  </tr>
-                </thead>
-                <tbody>{rows}</tbody>
-              </Table>
+              <StandingsTable players={league.players} />
               <Button
                 variant="light"
                 color="gray.4"
                 sx={{ alignSelf: 'flex-end', marginTop: 15 }}
+                onClick={open}
               >
                 Add match
               </Button>
@@ -108,16 +66,16 @@ const LeaguePage: NextPage<PlayersPageProps> = ({ leagueId }) => {
             <Title order={4} pb="0.6rem">
               Statistics
             </Title>
-            <Flex gap={10} wrap="wrap">
+            <Flex gap={16} wrap="wrap">
               {stats.map(stat => (
-                <StatCard key="test" stat={stat} />
+                <StatCard key={`stat_card_${stat.name}`} stat={stat} />
               ))}
             </Flex>
           </Grid.Col>
           <Grid.Col md={6} lg={3}>
-            <Flex direction="column" gap="sm" w="100%">
+            <Flex direction="column" gap="sm">
               <Title order={4}>Match history</Title>
-              {league?.matches.map(match => (
+              {league?.matches.slice(0, 5).map(match => (
                 <MatchCard key={`match_card_${match.id}`} matchInfo={match} />
               ))}
 
@@ -132,6 +90,16 @@ const LeaguePage: NextPage<PlayersPageProps> = ({ leagueId }) => {
             </Flex>
           </Grid.Col>
         </Grid>
+        {opened && (
+          <MatchModal
+            opened={opened}
+            loading={createMatch.isLoading}
+            close={close}
+            players={league.players}
+            handleSubmit={handleCreateSubmit}
+            title={'Add new match'}
+          />
+        )}
       </main>
     </>
   );

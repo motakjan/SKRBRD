@@ -26,7 +26,7 @@ export function useToast() {
     notifications.show({
       title,
       message,
-      color: 'yellow',
+      color: 'teal',
       icon: <IconCheck size="1rem" />,
       styles: theme => ({
         root: { backgroundColor: theme.colors.dark[9] },
@@ -63,7 +63,7 @@ export function useToast() {
       id,
       title,
       message,
-      color: success ? 'yellow' : 'red',
+      color: success ? 'teal' : 'red',
       styles: theme => ({
         root: { backgroundColor: theme.colors.dark[9] },
       }),
