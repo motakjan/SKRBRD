@@ -13,8 +13,9 @@ import {
   IconCalendarDue,
   IconHome2,
   IconLogin,
+  IconMoonStars,
   IconPlaylistAdd,
-  IconTerminal2,
+  IconSun,
   IconTimeline,
   IconTrophy,
   IconUsers,
@@ -39,13 +40,15 @@ type NavbarMinimalProps = {
 };
 
 export const NavbarMinimal: React.FC<NavbarMinimalProps> = ({ hasLeague }) => {
-  const { toggleColorScheme } = useMantineColorScheme();
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const { openSignIn } = useClerk();
   const { isSignedIn } = useUser();
   const [opened, { open, close }] = useDisclosure(false);
   const { createLeague } = useLeagueMutations(close);
   const router = useRouter();
+
   const leagueId = router.query.leagueId as string;
+  const dark = colorScheme === 'dark';
 
   const baseLinks = basicLinks.map(link => (
     <NavbarLink {...link} key={link.label} />
@@ -132,8 +135,9 @@ export const NavbarMinimal: React.FC<NavbarMinimalProps> = ({ hasLeague }) => {
       <Navbar.Section>
         <Stack justify="center" spacing={0}>
           <NavbarLink
-            icon={IconTerminal2}
-            label="Open console"
+            icon={dark ? IconSun : IconMoonStars}
+            label="Switch theme"
+            fill={dark ? 'yellow.5' : 'gray.9'}
             href="/"
             onClick={() => toggleColorScheme()}
           />

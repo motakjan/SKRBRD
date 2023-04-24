@@ -76,7 +76,14 @@ const PlayersPage: NextPage<PlayersPageProps> = ({ leagueId }) => {
       </Head>
       <main>
         <Flex gap={10} align="center">
-          <Title order={1}>Players</Title>
+          <Title
+            order={1}
+            sx={theme => ({
+              color: theme.colorScheme === 'dark' ? 'white' : 'black',
+            })}
+          >
+            Players
+          </Title>
           <ActionIcon variant="light" radius="md" onClick={open}>
             <IconPlus size="1rem" />
           </ActionIcon>
@@ -87,9 +94,7 @@ const PlayersPage: NextPage<PlayersPageProps> = ({ leagueId }) => {
           {league.players.map(player => (
             <Grid.Col md={6} lg={3} key={`card-${player.id}`}>
               <PlayerCard
-                firstName={player.firstName}
-                lastName={player.lastName}
-                id={player.id}
+                player={player}
                 loading={deletePlayer.isLoading}
                 onEditClick={handlePlayerEditClick}
                 onDeleteClick={openConfirmModal}

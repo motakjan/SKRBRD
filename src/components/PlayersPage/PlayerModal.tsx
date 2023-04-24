@@ -65,7 +65,7 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
           <Button
             type="submit"
             variant="light"
-            color="yellow.5"
+            color="violet.5"
             disabled={loading}
             sx={{ alignSelf: 'flex-end', marginTop: 15 }}
           >

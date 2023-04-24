@@ -68,8 +68,8 @@ export const LeaguePopover = () => {
             marginBottom: 15,
             height: 30,
             borderRadius: theme.radius.md,
-            backgroundColor: theme.fn.rgba(theme.colors.yellow[5], 0.2),
-            color: theme.colors.yellow[8],
+            backgroundColor: theme.fn.rgba(theme.colors.violet[5], 0.2),
+            color: theme.colors.violet[8],
           })}
         >
           <IconSelect size="1.2rem" stroke={1.5} />
@@ -90,6 +90,11 @@ export const LeaguePopover = () => {
           defaultValue={value}
           onChange={event => setValue(event.currentTarget.value)}
           size="xs"
+          sx={theme => ({
+            '.mantine-TextInput-input:focus': {
+              borderColor: theme.colors.violet[5],
+            },
+          })}
           description="Search for a league"
         />
         <Text fz="xs" fw={700}>

@@ -107,7 +107,7 @@ export const MatchModal: React.FC<MatchModalProps> = ({
           <Switch
             mt="md"
             label="Overtime"
-            color="yellow.5"
+            color="violet.5"
             description="Whether or not the match was decided in overtime"
             {...form.getInputProps('overtime', { type: 'checkbox' })}
           />
@@ -115,7 +115,7 @@ export const MatchModal: React.FC<MatchModalProps> = ({
           <Button
             type="submit"
             variant="light"
-            color="yellow.5"
+            color="violet.5"
             disabled={loading}
             sx={{ alignSelf: 'flex-end', marginTop: 15 }}
           >

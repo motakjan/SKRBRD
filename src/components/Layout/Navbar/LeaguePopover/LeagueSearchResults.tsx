@@ -33,7 +33,7 @@ export const LeagueSearchResults: React.FC<LeagueSearchResultsProps> = ({
     <Flex direction="column">
       {isLoading ? (
         <Center h={100}>
-          <Loader size="sm" color="yellow.6" />
+          <Loader size="sm" color="violet.6" />
         </Center>
       ) : (
         <Flex direction="column">

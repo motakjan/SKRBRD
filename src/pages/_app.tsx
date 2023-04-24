@@ -33,7 +33,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       <MantineProvider
         theme={{
           colorScheme,
-          fontFamily: 'Nunito, sans-serif',
+          fontFamily: 'Outfit, sans-serif',
           loader: 'bars',
         }}
         withGlobalStyles
@@ -42,7 +42,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         <ClerkProvider
           {...pageProps}
           appearance={{
-            baseTheme: dark,
+            baseTheme: colorScheme === 'dark' ? dark : undefined,
           }}
         >
           <ModalsProvider>

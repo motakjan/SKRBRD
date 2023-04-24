@@ -9,7 +9,7 @@ import { MatchModal } from '~/components/LeaguePage/MatchModal';
 import { StandingsTable } from '~/components/LeaguePage/StandingsTable';
 import { StatCard } from '~/components/LeaguePage/StatCard';
 import { useMatchMutations } from '~/hooks/mutations/useMatchMutations';
-import { type MatchFormValues } from '~/types/match.types';
+import type { MatchFormValues } from '~/types/match.types';
 import { api } from '~/utils/api';
 import { generateSSGHelper } from '~/utils/ssgHelper';
 
@@ -39,7 +39,14 @@ const LeaguePage: NextPage<PlayersPageProps> = ({ leagueId }) => {
       </Head>
       <main>
         <Flex gap={10} align="center">
-          <Title order={1}>League {league.name}</Title>
+          <Title
+            order={1}
+            sx={theme => ({
+              color: theme.colorScheme === 'dark' ? 'white' : 'black',
+            })}
+          >
+            League {league.name}
+          </Title>
         </Flex>
         <Text fz="sm">
           Main information page with all the information about the league
@@ -48,10 +55,17 @@ const LeaguePage: NextPage<PlayersPageProps> = ({ leagueId }) => {
         <Grid pt="2rem" gutter="xl">
           <Grid.Col md={12} xl={6}>
             <Flex direction="column" gap="0.8rem">
-              <Title order={4}>Standings</Title>
+              <Title
+                order={4}
+                sx={theme => ({
+                  color: theme.colorScheme === 'dark' ? 'white' : 'black',
+                })}
+              >
+                Standings
+              </Title>
               <StandingsTable players={league.players} />
               <Button
-                color="orange.5 "
+                color="violet.5 "
                 variant="subtle"
                 sx={{ alignSelf: 'flex-end', marginTop: 15, fontWeight: 700 }}
                 leftIcon={<IconPlus size="1rem" />}
@@ -63,7 +77,13 @@ const LeaguePage: NextPage<PlayersPageProps> = ({ leagueId }) => {
           </Grid.Col>
 
           <Grid.Col md={6} xl={3}>
-            <Title order={4} pb="0.6rem">
+            <Title
+              order={4}
+              pb="0.6rem"
+              sx={theme => ({
+                color: theme.colorScheme === 'dark' ? 'white' : 'black',
+              })}
+            >
               Statistics
             </Title>
             <Flex gap={16} wrap="wrap">
@@ -76,7 +96,14 @@ const LeaguePage: NextPage<PlayersPageProps> = ({ leagueId }) => {
           </Grid.Col>
           <Grid.Col md={6} xl={3}>
             <Flex direction="column" gap="sm">
-              <Title order={4}>Match history</Title>
+              <Title
+                order={4}
+                sx={theme => ({
+                  color: theme.colorScheme === 'dark' ? 'white' : 'black',
+                })}
+              >
+                Match history
+              </Title>
               {league?.matches.slice(0, 5).map(match => (
                 <MatchCard key={`match_card_${match.id}`} matchInfo={match} />
               ))}
@@ -85,7 +112,7 @@ const LeaguePage: NextPage<PlayersPageProps> = ({ leagueId }) => {
                 href={`/history/${leagueId}`}
                 style={{ textDecoration: 'none' }}
               >
-                <Text c="blue.4" td="none" fz="sm">
+                <Text c="indigo.5" fw={500} fz="sm" td="underline">
                   For more matches click this link
                 </Text>
               </Link>
