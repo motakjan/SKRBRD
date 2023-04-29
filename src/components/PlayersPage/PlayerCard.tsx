@@ -1,5 +1,6 @@
 import { ActionIcon, Badge, Card, Flex, Text } from '@mantine/core';
 import { IconPencil, IconTrash } from '@tabler/icons-react';
+import { motion } from 'framer-motion';
 import { type PlayerWithMatches } from '~/types/score.types';
 
 type PlayerCardProps = {
@@ -16,60 +17,75 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
   onEditClick,
 }) => {
   return (
-    <Card
-      radius="md"
-      shadow="xs"
-      padding="sm"
-      sx={theme => ({
-        width: '100%',
-        backgroundColor:
-          theme.colorScheme === 'dark'
-            ? theme.colors.dark[8]
-            : theme.colors.gray[0],
-        borderLeft: '5px solid',
-        borderColor:
-          theme.colorScheme === 'dark'
-            ? theme.colors.violet[7]
-            : theme.colors.violet[3],
-      })}
+    <motion.div
+      className="box"
+      key={`player-card-${player.id}`}
+      initial={{ opacity: 0, scale: 0.5 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{
+        duration: 0.5,
+        delay: 0.2,
+      }}
     >
-      <Flex justify="space-between" align="center">
-        <Flex direction="column">
-          <Text fz="sm">{player.firstName}</Text>
-          <Flex gap={10} align="center">
-            <Text
-              fz="md"
-              fw={700}
-              tt="uppercase"
-              sx={theme => ({
-                color: theme.colorScheme === 'dark' ? 'white' : 'black',
-              })}
+      <Card
+        radius="md"
+        shadow="xs"
+        padding="sm"
+        sx={theme => ({
+          width: '100%',
+          backgroundColor:
+            theme.colorScheme === 'dark'
+              ? theme.colors.dark[8]
+              : theme.colors.gray[0],
+          borderLeft: '5px solid',
+          borderColor:
+            theme.colorScheme === 'dark'
+              ? theme.colors.violet[7]
+              : theme.colors.violet[3],
+        })}
+      >
+        <Flex justify="space-between" align="center">
+          <Flex direction="column">
+            <Text fz="sm">{player.firstName}</Text>
+            <Flex gap={10} align="center">
+              <Text
+                fz="md"
+                fw={700}
+                tt="uppercase"
+                sx={theme => ({
+                  color: theme.colorScheme === 'dark' ? 'white' : 'black',
+                })}
+              >
+                {player.lastName}
+              </Text>
+              <Badge c="violet.6">{player.mmr}</Badge>
+            </Flex>
+          </Flex>
+          <Flex direction="column">
+            <ActionIcon
+              variant={loading ? 'transparent' : 'subtle'}
+              disabled={loading}
+              onClick={() => onEditClick(player.id)}
             >
-              {player.lastName}
-            </Text>
-            <Badge c="violet.6">{player.mmr}</Badge>
+              <IconPencil size="1rem" />
+            </ActionIcon>
+            <ActionIcon
+              variant={loading ? 'transparent' : 'subtle'}
+              color="red.8"
+              disabled={loading}
+              onClick={() =>
+                onDeleteClick(
+                  `${player.firstName} ${player.lastName}`,
+                  player.id
+                )
+              }
+            >
+              <IconTrash size="1rem" />
+            </ActionIcon>
           </Flex>
         </Flex>
-        <Flex direction="column">
-          <ActionIcon
-            variant={loading ? 'transparent' : 'subtle'}
-            disabled={loading}
-            onClick={() => onEditClick(player.id)}
-          >
-            <IconPencil size="1rem" />
-          </ActionIcon>
-          <ActionIcon
-            variant={loading ? 'transparent' : 'subtle'}
-            color="red.8"
-            disabled={loading}
-            onClick={() =>
-              onDeleteClick(`${player.firstName} ${player.lastName}`, player.id)
-            }
-          >
-            <IconTrash size="1rem" />
-          </ActionIcon>
-        </Flex>
-      </Flex>
-    </Card>
+      </Card>
+    </motion.div>
   );
 };

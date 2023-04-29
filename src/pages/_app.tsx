@@ -12,6 +12,7 @@ import {
 import { useLocalStorage } from '@mantine/hooks';
 import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
+import { AnimatePresence } from 'framer-motion';
 import '~/styles/globals.css';
 import { Layout } from '../components/Layout/Layout';
 
@@ -30,31 +31,33 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       colorScheme={colorScheme}
       toggleColorScheme={toggleColorScheme}
     >
-      <MantineProvider
-        theme={{
-          colorScheme,
-          fontFamily: 'Outfit, sans-serif',
-          loader: 'bars',
-        }}
-        withGlobalStyles
-        withNormalizeCSS
-      >
-        <ClerkProvider
-          {...pageProps}
-          appearance={{
-            baseTheme: colorScheme === 'dark' ? dark : undefined,
+      <AnimatePresence mode="wait">
+        <MantineProvider
+          theme={{
+            colorScheme,
+            fontFamily: 'Outfit, sans-serif',
+            loader: 'bars',
           }}
+          withGlobalStyles
+          withNormalizeCSS
         >
-          <ModalsProvider>
-            <Layout>
-              <>
-                <Notifications />
-                <Component {...pageProps} />
-              </>
-            </Layout>
-          </ModalsProvider>
-        </ClerkProvider>
-      </MantineProvider>
+          <ClerkProvider
+            {...pageProps}
+            appearance={{
+              baseTheme: colorScheme === 'dark' ? dark : undefined,
+            }}
+          >
+            <ModalsProvider>
+              <Layout>
+                <>
+                  <Notifications />
+                  <Component {...pageProps} />
+                </>
+              </Layout>
+            </ModalsProvider>
+          </ClerkProvider>
+        </MantineProvider>
+      </AnimatePresence>
     </ColorSchemeProvider>
   );
 };
