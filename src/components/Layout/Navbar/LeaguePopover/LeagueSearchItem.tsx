@@ -27,7 +27,10 @@ export const LeagueSearchItem: React.FC<LeagueItemProps> = ({ league }) => {
           color: league.isPrivate ? theme.colors.dark[3] : theme.colors.dark[1],
           borderRadius: '4px',
           '&:hover': {
-            background: theme.colors.dark[7],
+            background:
+              theme.colorScheme === 'dark'
+                ? theme.colors.dark[7]
+                : theme.colors.gray[1],
           },
         })}
       >

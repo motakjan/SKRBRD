@@ -15,7 +15,7 @@ export const StandingsTable: React.FC<StandingsTableProps> = ({ players }) => {
       case -1:
         return 'red.5';
       default:
-        return 'yellow.5';
+        return 'violet.5';
     }
   };
 

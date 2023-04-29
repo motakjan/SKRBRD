@@ -12,6 +12,7 @@ export type NavbarLinkProps = {
   label: string;
   active?: boolean;
   href?: string;
+  fill?: string;
   onClick?: () => void;
 };
 

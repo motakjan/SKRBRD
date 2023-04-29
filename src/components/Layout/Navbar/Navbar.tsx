@@ -1,4 +1,11 @@
-import { Center, Divider, Navbar, Stack } from '@mantine/core';
+/* eslint-disable @typescript-eslint/unbound-method */
+import {
+  Center,
+  Divider,
+  Navbar,
+  Stack,
+  useMantineColorScheme,
+} from '@mantine/core';
 
 import { UserButton, useClerk, useUser } from '@clerk/nextjs';
 import { useDisclosure } from '@mantine/hooks';
@@ -6,8 +13,9 @@ import {
   IconCalendarDue,
   IconHome2,
   IconLogin,
+  IconMoonStars,
   IconPlaylistAdd,
-  IconTerminal2,
+  IconSun,
   IconTimeline,
   IconTrophy,
   IconUsers,
@@ -32,12 +40,15 @@ type NavbarMinimalProps = {
 };
 
 export const NavbarMinimal: React.FC<NavbarMinimalProps> = ({ hasLeague }) => {
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const { openSignIn } = useClerk();
   const { isSignedIn } = useUser();
   const [opened, { open, close }] = useDisclosure(false);
   const { createLeague } = useLeagueMutations(close);
   const router = useRouter();
+
   const leagueId = router.query.leagueId as string;
+  const dark = colorScheme === 'dark';
 
   const baseLinks = basicLinks.map(link => (
     <NavbarLink {...link} key={link.label} />
@@ -94,7 +105,7 @@ export const NavbarMinimal: React.FC<NavbarMinimalProps> = ({ hasLeague }) => {
         backgroundColor:
           theme.colorScheme === 'dark'
             ? theme.colors.dark[9]
-            : theme.colors.white,
+            : theme.colors.gray[0],
       })}
       zIndex={133}
       height="initial"
@@ -123,7 +134,13 @@ export const NavbarMinimal: React.FC<NavbarMinimalProps> = ({ hasLeague }) => {
       </Navbar.Section>
       <Navbar.Section>
         <Stack justify="center" spacing={0}>
-          <NavbarLink icon={IconTerminal2} label="Open console" href="/" />
+          <NavbarLink
+            icon={dark ? IconSun : IconMoonStars}
+            label="Switch theme"
+            fill={dark ? 'yellow.5' : 'gray.9'}
+            href="/"
+            onClick={() => toggleColorScheme()}
+          />
           {isSignedIn ? (
             <Center>
               <UserButton />

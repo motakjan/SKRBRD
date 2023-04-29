@@ -8,6 +8,7 @@ export const NavbarLink: React.FC<NavbarLinkProps> = ({
   label,
   active,
   href,
+  fill,
   onClick,
 }) => {
   const { classes, cx } = useStyles();
@@ -17,6 +18,7 @@ export const NavbarLink: React.FC<NavbarLinkProps> = ({
         <UnstyledButton
           onClick={onClick}
           className={cx(classes.link, { [classes.active]: active })}
+          c={fill}
         >
           <Icon size="1.2rem" stroke={1.5} />
         </UnstyledButton>
